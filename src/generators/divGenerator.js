@@ -14,10 +14,6 @@ divGenerator.createDivWithClass = (className) => {
     return div;
 }
 
-divGenerator.createTodoContainer = (todo) => {
-
-    
-}
 
 export {
     divGenerator

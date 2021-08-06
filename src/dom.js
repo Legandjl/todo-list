@@ -1,58 +1,84 @@
 import {
     divGenerator
-} from "./helpers/divGenerator";
+} from "./generators/divGenerator";
 import {
     titleClick,
     addButtonClick,
-    formsubmit
+    todoSubmit,
+    updateHome,
+    updateToday
 } from "./logic"
+import {
+    generateForm,
+    generateTodoElement
+} from "./generators/elementGenerator";
 
 const sideBarTitles = ["Home", "Today", "Week", "Projects", "Notes"];
 let header = divGenerator.createDiv("header");
 let sidebar = divGenerator.createDiv("sideBar");
 let sideContainer = divGenerator.createDiv("sideContainer");
 let buttonContainer = divGenerator.createDiv("buttonContainer");
+
 let addNewButton = document.createElement("button");
 let display = divGenerator.createDiv("display");
 let content = document.querySelector("#content");
 
+let sidebarElements = [sideContainer, buttonContainer];
+let contentElements = [header, sidebar, display];
 
 let formContainer = divGenerator.createDiv("formContainer");
 formContainer.classList.add("hidden");
-let form = document.createElement("FORM");
-form.id = "todoForm"
-let title = document.createElement("input");
-title.type = "text";
-title.classList.add("title")
-let desc = document.createElement("input");
-desc.type = "text";
-desc.classList.add("desc");
-let date = document.createElement("input");
-date.type = "date";
-date.classList.add("formDate");
-//priority
-let submitButton = document.createElement("input")
-submitButton.setAttribute("type", "submit");
-submitButton.id = "todoSubmit";
-form.append(title);
-form.append(desc);
-form.append(date);
-form.append(submitButton);
+let form = generateForm();
+let formHeader = divGenerator.createDiv("formHeader");
+let formSidebar = divGenerator.createDiv("formSidebar");
+
 formContainer.append(form);
-form.addEventListener("submit", formsubmit)
 
+formContainer.append(formHeader);
+formContainer.append(formSidebar);
+form.addEventListener("submit", todoSubmit)
 
+let toggleForm = function () {
+
+    formContainer.classList.toggle("hidden");
+}
+
+let setDisplay = function (todo) {
+
+    let todoElement = generateTodoElement(todo);
+    display.append(todoElement);
+}
+
+let removeFromDisplay = (element) => {
+
+    element.remove();
+}
+
+let removeAllChildNodes = () => {
+    while (display.firstChild) {
+        display.removeChild(display.firstChild);
+    }
+}
+
+let showDescription = () => {
+
+    console.log("desc");
+}
 
 let initialLoad = function () {
 
-    sidebar.appendChild(sideContainer);
-    sidebar.appendChild(buttonContainer);
+    sidebarElements.forEach((element) => {
+
+        sidebar.append(element);
+    })
+
     buttonContainer.appendChild(addNewButton);
     addNewButton.id = "addNewButton";
 
-    content.appendChild(header);
-    content.appendChild(sidebar);
-    content.appendChild(display);
+    contentElements.forEach((element) => {
+
+        content.append(element);
+    })
 
     document.body.appendChild(formContainer);
 
@@ -66,33 +92,18 @@ let initialLoad = function () {
     })
 
     addNewButton.addEventListener("click", addButtonClick);
-}
 
-let toggleForm = function () {
+    document.querySelector("#Home").addEventListener("click", updateHome);
 
-    formContainer.classList.toggle("hidden");
-}
 
-let setDisplay = function (todo) {
-
-    let todoContainer = divGenerator.createDivWithClass("todoElement");
-
-    let checkBoxWrapper = divGenerator.createDivWithClass("checkBoxWrapper"); //check if completed
-    let titleWrapper = divGenerator.createDivWithClass("titleWrapper"); //will hold todo title
-    let descButtonWrapper = divGenerator.createDivWithClass("descButtonWrap"); //holds a button to display a window with the description
-    let iconWrap = divGenerator.createDivWithClass("iconWrap"); //holds the bin & edit icon
-
-    //append all the above to the container
-
-    //then append the correct elements to each (title, descbutton, icons etc)
-
-    //then append to the display   
-
-    display.append(element);
+    document.querySelector("#Today").addEventListener("click", updateToday);
 }
 
 export {
     initialLoad,
     setDisplay,
-    toggleForm
+    toggleForm,
+    removeFromDisplay,
+    removeAllChildNodes,
+    showDescription
 }

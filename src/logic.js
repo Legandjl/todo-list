@@ -1,14 +1,17 @@
 import {
+    removeFromDisplay,
     setDisplay,
-    toggleForm
+    toggleForm,
+    removeAllChildNodes
 } from "./dom"
 import {
-    elementGenerator
-} from "./elementFactory"
+    objectGenerator
+} from "./objectFactory"
 import {
-    divGenerator
-} from "./helpers/divGenerator"
-import { compareAsc, format } from 'date-fns'
+    compareAsc,
+    format,
+    isSameDay
+} from 'date-fns'
 
 let currentSelection = "Home";
 
@@ -24,53 +27,96 @@ let titleClick = function (e) {
 
 let addButtonClick = function (e) {
 
-    console.log(currentSelection);    
+    console.log(currentSelection);
     toggleForm();
-
-
     //will add to the currently clicked display
     //so create - currentSelection - div
     //get the currentSelection type module - generate contents, add contents to div append to display
 }
 
-let formsubmit = function(e) {
+let todoSubmit = function (e) {
 
-    console.log(e.target.elements)
     let submitted = e.target.elements;
     let todoElements = [];
     let todoDate = "";
 
-    for(let x = 0; x < submitted.length; x ++) {        
+    for (let x = 0; x < submitted.length; x++) {
 
-        if(submitted[x].type == "text") {
+        if (submitted[x].type == "text") {
 
-      
             todoElements.push(submitted[x].value)
-        }   
-        
-        if(submitted[x].type == "date") {
+        }
 
-           todoDate = submitted[x].value;
+        if (submitted[x].type == "date") {
+
+            todoDate = submitted[x].value;
         }
     }
 
-    console.log(todoElements);
+    let newTodo = objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, "low");
+    addTodo(newTodo);
 
-  
-    //needs to create a new todo with the form input
-    //then append it to display
-    //then reset and close form
+    let id = todoList.indexOf(newTodo);
+    newTodo.setIdentifier(id);
 
-    let newTodo = elementGenerator().createToDo(todoElements[0], todoElements[1], todoDate, "low");
-    todoList.push(newTodo)
-    console.log("Title: " + newTodo.getTitle() + " Desc: " + newTodo.getDesc() + " Date: " + newTodo.getDate()  ); 
-    //append to display setDisplay();
-    e.preventDefault(); 
+    setDisplay(newTodo);
+    e.preventDefault();
 }
 
+let addTodo = (todo) => {
+
+    console.log(format(new Date, "yyyy-MM-dd") == todo.getDate()); //can use to filter to day 
+
+
+
+    todoList.push(todo);
+}
+
+let removeTodo = (e) => {
+
+    let id = e.target.parentElement.parentElement.dataset.id;
+
+    let newTodoList = todoList.filter((element) => {
+
+        return element.getIdentifier() != id;
+    })
+
+    todoList = newTodoList;
+
+    removeFromDisplay(e.target.parentElement.parentElement);
+}
+
+let updateHome = () => {
+
+    removeAllChildNodes();
+
+    todoList.forEach((todo) => {
+
+        setDisplay(todo);
+
+    })
+}
+
+let updateToday = () => {
+
+    removeAllChildNodes();
+
+    let todaysTodos = todoList.filter((element) => {
+
+        return element.getDate() == format(new Date, "yyyy-MM-dd");
+    })
+
+    todaysTodos.forEach((todo) => {
+        
+        setDisplay(todo)
+    });
+}
 
 export {
     addButtonClick,
     titleClick,
-    formsubmit
+    todoSubmit,
+    removeTodo,
+    updateHome,
+    updateToday
 }
