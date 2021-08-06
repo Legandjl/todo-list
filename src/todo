@@ -1,0 +1,18 @@
+refactor opendesc and openform
+
+
+add priority to details
+
+add priority selector to todoform 
+
+add priority indicicator to todo element
+
+implement edit function
+
+sort by week
+
+add counter of uncompleted todos - display in menu next to title (ie today : 3)
+
+add titles to form - create project, todo or note
+
+refactor 

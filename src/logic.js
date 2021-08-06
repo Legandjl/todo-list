@@ -1,16 +1,13 @@
 import {
     removeFromDisplay,
-    setDisplay,
-    toggleForm,
-    removeAllChildNodes
+    setDisplay,   
+    clearDisplay
 } from "./dom"
 import {
     objectGenerator
 } from "./objectFactory"
 import {
-    compareAsc,
-    format,
-    isSameDay
+    format
 } from 'date-fns'
 
 let currentSelection = "Home";
@@ -23,15 +20,6 @@ let titleClick = function (e) {
     console.log(currentSelection);
 
     //will update display to the chosen module (ie projects, notes etc)  
-}
-
-let addButtonClick = function (e) {
-
-    console.log(currentSelection);
-    toggleForm();
-    //will add to the currently clicked display
-    //so create - currentSelection - div
-    //get the currentSelection type module - generate contents, add contents to div append to display
 }
 
 let todoSubmit = function (e) {
@@ -84,7 +72,7 @@ let removeTodo = (e) => {
 
 let updateHome = () => {
 
-    removeAllChildNodes();
+    clearDisplay();
 
     todoList.forEach((todo) => {
 
@@ -95,7 +83,7 @@ let updateHome = () => {
 
 let updateToday = () => {
 
-    removeAllChildNodes();
+    clearDisplay();
 
     let todaysTodos = todoList.filter((element) => {
 
@@ -103,7 +91,7 @@ let updateToday = () => {
     })
 
     todaysTodos.forEach((todo) => {
-        
+
         setDisplay(todo)
     });
 }
@@ -112,13 +100,13 @@ let getTodo = (id) => {
 
     console.log("checking")
 
-    let newTodo = todoList.filter((todo) => {      
+    let newTodo = todoList.filter((todo) => {
 
         return todo.getIdentifier() == id;
     })
-    
+
     console.log(newTodo[0].getIdentifier())
-   
+
 
     return newTodo[0];
 
@@ -126,7 +114,7 @@ let getTodo = (id) => {
 }
 
 export {
-    addButtonClick,
+   
     titleClick,
     todoSubmit,
     removeTodo,

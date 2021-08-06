@@ -14,7 +14,6 @@ divGenerator.createDivWithClass = (className) => {
     return div;
 }
 
-
 export {
     divGenerator
 }

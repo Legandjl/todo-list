@@ -161,7 +161,15 @@ body {
     border-style: solid;
     border-width: 2px;
     border-bottom: none;
+    font-size: 28px;
+    display: grid;
+    align-content: center;
+    align-items: center;
+    padding: 10px;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr;
 }
+
 
 #sideBar {
 
@@ -238,7 +246,7 @@ body {
     display: none !important;
 }
 
-/*app display end */
+
 
 /*form stuff*/
 
@@ -264,6 +272,18 @@ body {
     grid-column: 1/-1;
     display: grid;
     border-bottom: solid 2px;
+    align-content: center;
+    align-items: center;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr auto;
+
+}
+
+#formHeader img {
+
+    align-self: flex-start;
+    grid-row: 1;
+    grid-column: 2;
 }
 
 #formSidebar {
@@ -316,15 +336,12 @@ input {
 
     grid-column: 1;
     width: auto;
-
-
 }
 
 #todoSubmit {
     grid-column-end: -1;
 }
 
-/*form stuff end*/
 
 /* display containers */
 
@@ -355,8 +372,6 @@ input {
     align-items: center;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
-
-
 }
 
 /* desc window stuff*/
@@ -366,7 +381,7 @@ input {
     position: fixed;
     display: grid;
     width: 600px;
-    height: 300px;
+    height: 250px;
     border: solid 2px;
     align-self: center;
     justify-self: center;
@@ -379,32 +394,54 @@ input {
 
     grid-column: 1/-1;
     grid-row: 1;
-    height: 60px;
-    border: solid 2px;
+    height: 40px;
     display: grid;
-    grid-template-columns: 1fr;
+    align-content: center;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr;
+    align-items: center;
+}
+
+.descriptionHeader img {
+
+    grid-row: 1;
+    grid-column: 2;
+    align-self: flex-start;
+
 }
 
 .descriptionBody {
 
     grid-row: 2;
+    border: solid 2px;
+    grid-column: 1/-1;
+    border-left: none;
+    border-right: none;
+    padding: 10px;
 }
 
 .descTitleWrap {
 
-    grid-column: 1/-1;
+    grid-column: 1;
     display: grid;
     align-content: center;
+    align-self: center;
+    padding: 10px;
+
 }
 
 .descFooter {
 
     grid-column: 1/-1;
     grid-row: 3;
-    border: solid 2px;
+
     height: 30px;
     display: grid;
     align-content: center;
 }
 
 .descWrap {}
+
+input:focus::placeholder {
+    color: transparent;
+}

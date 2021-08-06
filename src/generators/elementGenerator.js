@@ -3,27 +3,43 @@ import {
 } from "./divGenerator"
 import bin from ".././images/bin.png"
 import edit from ".././images/edit.png"
-import {
-    removeElement,
-    showDescription
+import close from ".././images/close.png"
+import {   
+    showDescription,   
+    closeForm,
+    closeDescription
 } from "../dom"
-import {removeTodo
+import {
+    removeTodo,
+    getTodo,
+    todoSubmit
 } from "../logic"
 
 let generateForm = () => {
 
+    let formClose = new Image();
+    formClose.src = close;
+
+    let formContainer = divGenerator.createDiv("formContainer");
+
     let form = document.createElement("FORM");
     form.id = "todoForm"
+
     let title = document.createElement("input");
     title.type = "text";
-    title.classList.add("title")
+    title.placeholder = "Title: Call the bank"
+    title.classList.add("title");
+
     let desc = document.createElement("input");
     desc.type = "text";
+    desc.placeholder = "Description: e.g reason for calling..."
     desc.classList.add("desc");
+
     let date = document.createElement("input");
     date.type = "date";
     date.classList.add("formDate");
     //priority
+
     let submitButton = document.createElement("input")
     submitButton.setAttribute("type", "submit");
     submitButton.id = "todoSubmit";
@@ -35,7 +51,17 @@ let generateForm = () => {
         form.append(item);
     })
 
-    return form;
+    let formHeader = divGenerator.createDiv("formHeader");
+    formHeader.innerText = "Add New";
+    formHeader.append(formClose);
+    formClose.addEventListener("click", closeForm);
+    let formSidebar = divGenerator.createDiv("formSidebar");
+    formContainer.append(form);
+    formContainer.append(formHeader);
+    formContainer.append(formSidebar);
+    form.addEventListener("submit", todoSubmit);
+
+    return formContainer;
 }
 
 let generateTodoElement = function (todo) {
@@ -49,13 +75,14 @@ let generateTodoElement = function (todo) {
     checkBox.type = "checkbox";
     checkBox.id = "todoCheck";
 
-    if(todo.getCompleted() == true) {
+    if (todo.getCompleted() == true) {
 
         checkBox.checked = true;
     }
 
     let title = todo.getTitle();
     let descButton = document.createElement("button");
+    descButton.innerText = "Details";
     let binIcon = new Image();
     binIcon.src = bin;
     let editIcon = new Image();
@@ -77,14 +104,52 @@ let generateTodoElement = function (todo) {
 
     todoContainer.setAttribute("data-id", todo.getIdentifier());
 
-    binIcon.addEventListener("click", removeTodo); 
+    binIcon.addEventListener("click", removeTodo);
     checkBox.addEventListener("change", todo.setCompleted);
     descButton.addEventListener("click", showDescription);
+
 
     return todoContainer;
 }
 
+let generateDescription = (todoId) => {
+
+    let todo = getTodo(todoId);    
+
+    let description = divGenerator.createDivWithClass("description");
+    let descHeader = divGenerator.createDivWithClass("descriptionHeader");
+    let descBody = divGenerator.createDivWithClass("descriptionBody");
+    let descFooter = divGenerator.createDivWithClass("descFooter");
+    let descTitle = divGenerator.createDivWithClass("descTitleWrap");
+    let descWrapper = divGenerator.createDivWithClass("descWrap");
+    let dateWrapper = divGenerator.createDivWithClass("descDateWrapper");
+
+    let windowClose = new Image();
+    windowClose.src = close;
+
+    dateWrapper.innerText = "Date: " + todo.getDate();
+
+    //also need due date, priority, and project (if any)
+
+    descWrapper.innerText = "Description: " + todo.getDesc();
+    descTitle.innerText = "Title: " + todo.getTitle();
+
+    descHeader.append(descTitle);
+    descHeader.append(windowClose);
+    descBody.append(descWrapper);
+    descFooter.append(dateWrapper);
+    description.append(descHeader);
+    description.append(descBody);
+    description.append(descFooter);
+
+    windowClose.addEventListener("click", closeDescription);
+
+    return description;
+
+}
+
 export {
     generateForm,
-    generateTodoElement
+    generateTodoElement,
+    generateDescription
 }
