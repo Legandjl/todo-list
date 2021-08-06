@@ -6,7 +6,8 @@ import {
     addButtonClick,
     todoSubmit,
     updateHome,
-    updateToday
+    updateToday,
+    getTodo
 } from "./logic"
 import {
     generateForm,
@@ -31,14 +32,14 @@ formContainer.classList.add("hidden");
 let form = generateForm();
 let formHeader = divGenerator.createDiv("formHeader");
 let formSidebar = divGenerator.createDiv("formSidebar");
-
 formContainer.append(form);
-
 formContainer.append(formHeader);
 formContainer.append(formSidebar);
 form.addEventListener("submit", todoSubmit)
 
-let toggleForm = function () {
+let locked = false;
+
+let toggleForm = function () {  
 
     formContainer.classList.toggle("hidden");
 }
@@ -60,9 +61,52 @@ let removeAllChildNodes = () => {
     }
 }
 
-let showDescription = () => {
+let showDescription = (e) => {
 
-    console.log("desc");
+    if (locked == true) {
+
+        return;
+    }
+
+    locked = true;
+
+    console.log("made here")
+    let todoId = e.target.parentElement.parentElement.dataset.id;
+    console.log(todoId + "this is the id")
+    let todo = getTodo(todoId);
+    console.log(todo.getDesc());
+
+    let description = divGenerator.createDivWithClass("description");
+    let descHeader = divGenerator.createDivWithClass("descriptionHeader");
+    let descBody = divGenerator.createDivWithClass("descriptionBody");
+    let descFooter = divGenerator.createDivWithClass("descFooter");
+    let descTitle = divGenerator.createDivWithClass("descTitleWrap");
+    let descWrapper = divGenerator.createDivWithClass("descWrap");
+    let dateWrapper = divGenerator.createDivWithClass("descDateWrapper");
+
+    dateWrapper.innerText = "Date: " + todo.getDate();
+
+    //also need due date, priority, and project (if any)
+
+    descWrapper.innerText = "Description: " + todo.getDesc();
+    descTitle.innerText = "Title: " + todo.getTitle();
+
+    descHeader.append(descTitle);
+    descBody.append(descWrapper);
+    descFooter.append(dateWrapper);
+    
+    description.append(descHeader);
+    description.append(descBody);
+    description.append(descFooter);
+
+    document.querySelector("#content").append(description);
+    descHeader.addEventListener("click", closeDesciption);
+}
+
+let closeDesciption = (e) => {
+
+    e.target.parentElement.parentElement.remove();
+    locked = false;
 }
 
 let initialLoad = function () {
@@ -94,7 +138,6 @@ let initialLoad = function () {
     addNewButton.addEventListener("click", addButtonClick);
 
     document.querySelector("#Home").addEventListener("click", updateHome);
-
 
     document.querySelector("#Today").addEventListener("click", updateToday);
 }

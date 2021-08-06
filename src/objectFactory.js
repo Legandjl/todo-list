@@ -37,15 +37,13 @@ const Todo = function (title, desc, date, priority) {
 
         console.log(completed);
 
-        if(completed == true) {
+        if (completed == true) {
 
             completed = false;
             return;
-        
         }
 
         completed = true;
-        
     }
 
     let getCompleted = () => {
@@ -53,17 +51,15 @@ const Todo = function (title, desc, date, priority) {
         return completed;
     }
 
-
-
     return {
         getTitle,
         getDesc,
         getDate,
         getPriority,
         getIdentifier,
-        setIdentifier,  
+        setIdentifier,
         setCompleted,
-        getCompleted      
+        getCompleted
     }
 }
 
@@ -92,5 +88,5 @@ const objectGenerator = function () {
 }
 
 export {
-    objectGenerator 
+    objectGenerator
 }

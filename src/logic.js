@@ -65,10 +65,6 @@ let todoSubmit = function (e) {
 
 let addTodo = (todo) => {
 
-    console.log(format(new Date, "yyyy-MM-dd") == todo.getDate()); //can use to filter to day 
-
-
-
     todoList.push(todo);
 }
 
@@ -112,11 +108,29 @@ let updateToday = () => {
     });
 }
 
+let getTodo = (id) => {
+
+    console.log("checking")
+
+    let newTodo = todoList.filter((todo) => {      
+
+        return todo.getIdentifier() == id;
+    })
+    
+    console.log(newTodo[0].getIdentifier())
+   
+
+    return newTodo[0];
+
+
+}
+
 export {
     addButtonClick,
     titleClick,
     todoSubmit,
     removeTodo,
     updateHome,
-    updateToday
+    updateToday,
+    getTodo
 }

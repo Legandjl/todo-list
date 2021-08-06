@@ -173,7 +173,7 @@ body {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
     justify-content: center;
-    padding:5px;
+    padding: 5px;
     border-right: none;
 
 }
@@ -184,7 +184,7 @@ body {
     grid-row: 1;
     grid-template-columns: 1fr;
     grid-gap: 10px;
-   
+
 }
 
 .sideBarTitle {
@@ -206,7 +206,7 @@ body {
     grid-auto-rows: 80px;
     overflow-y: scroll;
     grid-gap: 10px;
-    padding:5px;
+    padding: 5px;
 
 }
 
@@ -252,7 +252,7 @@ body {
     justify-self: center;
     align-self: center;
     z-index: 1;
-   background-color: white;
+    background-color: white;
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-template-rows: auto 1fr;
@@ -260,8 +260,8 @@ body {
 
 #formHeader {
 
-    height:60px;
-    grid-column: 1/-1; 
+    height: 60px;
+    grid-column: 1/-1;
     display: grid;
     border-bottom: solid 2px;
 }
@@ -274,7 +274,7 @@ body {
 
 input {
 
-    padding:10px;
+    padding: 10px;
 }
 
 
@@ -285,7 +285,7 @@ input {
     grid-template-rows: auto 1fr auto;
     grid-template-columns: repeat(4, 1fr);
     grid-row: 2;
-    margin:10px;
+    margin: 10px;
     grid-gap: 10px;
     justify-items: center;
 }
@@ -295,29 +295,29 @@ input {
     height: 8vh;
     grid-column: 1/-1;
     grid-row: 1;
-    border:none;
-    width:100%;
+    border: none;
+    width: 100%;
 }
 
 .desc {
 
     grid-column: 1/-1;
-    border:none;
-    width:100%;
+    border: none;
+    width: 100%;
 }
 
 .desc:active {
 
-    border:none;
-    outline:none;
+    border: none;
+    outline: none;
 }
 
 .formDate {
 
     grid-column: 1;
-    width:auto;
-  
-  
+    width: auto;
+
+
 }
 
 #todoSubmit {
@@ -344,8 +344,8 @@ input {
 
 .toDoContainer button {
 
-    width:60px;
-    height:40px;
+    width: 60px;
+    height: 40px;
 }
 
 .iconWrap {
@@ -358,3 +358,53 @@ input {
 
 
 }
+
+/* desc window stuff*/
+
+.description {
+
+    position: fixed;
+    display: grid;
+    width: 600px;
+    height: 300px;
+    border: solid 2px;
+    align-self: center;
+    justify-self: center;
+    background-color: white;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+}
+
+.descriptionHeader {
+
+    grid-column: 1/-1;
+    grid-row: 1;
+    height: 60px;
+    border: solid 2px;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.descriptionBody {
+
+    grid-row: 2;
+}
+
+.descTitleWrap {
+
+    grid-column: 1/-1;
+    display: grid;
+    align-content: center;
+}
+
+.descFooter {
+
+    grid-column: 1/-1;
+    grid-row: 3;
+    border: solid 2px;
+    height: 30px;
+    display: grid;
+    align-content: center;
+}
+
+.descWrap {}
