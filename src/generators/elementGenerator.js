@@ -20,7 +20,7 @@ let generateForm = () => {
     let formClose = new Image();
     formClose.src = close;
 
-    let formContainer = divGenerator.createDiv("formContainer");
+    let formContainer = divGenerator.createDiv("addFormContainer");
 
     let form = document.createElement("FORM");
     form.id = "todoForm"
@@ -40,22 +40,49 @@ let generateForm = () => {
     date.classList.add("formDate");
     //priority
 
+    let radioWrap = divGenerator.createDiv("radioWrap");
+    let highPrio = document.createElement("input");
+    highPrio.type = "radio";
+    highPrio.value = "high";
+    highPrio.name = "priority";
+    highPrio.id = "highPrio";
+    highPrio.classList.add("radioButton")
+    let lowPrio = document.createElement("input");
+    lowPrio.type = "radio";
+    lowPrio.value = "low";
+    lowPrio.name = "priority";
+    lowPrio.id = "lowPrio"
+    lowPrio.classList.add("radioButton")
+
+    radioWrap.append(highPrio);
+    radioWrap.append(lowPrio);
+
+    let label = divGenerator.createDiv("prioityLabel");
+    label.innerText = "Priority: "
+
+    let priorityWrap = divGenerator.createDiv("priorityWrap");    
+    priorityWrap.append(label);
+    priorityWrap.append(radioWrap);  
+
     let submitButton = document.createElement("input")
     submitButton.setAttribute("type", "submit");
     submitButton.id = "todoSubmit";
 
-    let toAppend = [title, desc, date, submitButton];
+    let toAppend = [title, desc, date, priorityWrap, submitButton];
 
     toAppend.forEach((item) => {
 
         form.append(item);
     })
 
-    let formHeader = divGenerator.createDiv("formHeader");
-    formHeader.innerText = "Add New";
+    let formHeader = divGenerator.createDiv("addFormHeader");
+    let formHeaderTitle = divGenerator.createDiv("addFormTitle");
+    formHeaderTitle.innerText = "Add New";
+    formHeader.append(formHeaderTitle);
     formHeader.append(formClose);
     formClose.addEventListener("click", closeForm);
-    let formSidebar = divGenerator.createDiv("formSidebar");
+
+    let formSidebar = divGenerator.createDiv("addFormSidebar");
     formContainer.append(form);
     formContainer.append(formHeader);
     formContainer.append(formSidebar);
@@ -122,6 +149,7 @@ let generateDescription = (todoId) => {
     let descFooter = divGenerator.createDivWithClass("descFooter");
     let descTitle = divGenerator.createDivWithClass("descTitleWrap");
     let descWrapper = divGenerator.createDivWithClass("descWrap");
+    let priorityWrapper = divGenerator.createDivWithClass("priorityDescription");
     let dateWrapper = divGenerator.createDivWithClass("descDateWrapper");
 
     let windowClose = new Image();
@@ -132,12 +160,14 @@ let generateDescription = (todoId) => {
     //also need due date, priority, and project (if any)
 
     descWrapper.innerText = "Description: " + todo.getDesc();
+    priorityWrapper.innerText = "Priority: " + todo.getPriority();
     descTitle.innerText = "Title: " + todo.getTitle();
 
     descHeader.append(descTitle);
     descHeader.append(windowClose);
     descBody.append(descWrapper);
     descFooter.append(dateWrapper);
+    descFooter.append(priorityWrapper);
     description.append(descHeader);
     description.append(descBody);
     description.append(descFooter);

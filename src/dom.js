@@ -67,7 +67,7 @@ let openForm = () => {
 
 let closeForm = () => {
 
-    document.querySelector("#formContainer").remove();
+    document.querySelector("#addFormContainer").remove();
     locked = false;
 }
 

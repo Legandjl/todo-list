@@ -27,6 +27,8 @@ let todoSubmit = function (e) {
     let submitted = e.target.elements;
     let todoElements = [];
     let todoDate = "";
+    let todoPriority = "low";
+    
 
     for (let x = 0; x < submitted.length; x++) {
 
@@ -39,9 +41,15 @@ let todoSubmit = function (e) {
 
             todoDate = submitted[x].value;
         }
+
+        if(submitted[x].type == "radio" && submitted[x].checked == true) {
+
+            todoPriority = submitted[x].value;
+           
+        }
     }
 
-    let newTodo = objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, "low");
+    let newTodo = objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, todoPriority);
     addTodo(newTodo);
 
     let id = todoList.indexOf(newTodo);
