@@ -247,22 +247,32 @@ body {
 }
 /*form container stuff*/
 
-#addFormContainer {
+#addFormContainer, #editFormContainer {
 
-    position: fixed;
-    min-width: 750px;
-    min-height: 400px;
+    position: fixed;  
     display: grid;
     justify-self: center;
     align-self: center;
     z-index: 1;
     background-color: white;
     display: grid;
-    grid-template-columns: 1fr 3fr;
     grid-template-rows: auto 1fr;
 }
 
-#addFormHeader {
+#addFormContainer {
+
+    min-width: 750px;
+    min-height: 400px;
+    grid-template-columns: 1fr 3fr;
+}
+
+#editFormContainer {
+
+    min-width: 600px;
+    min-height: 300px;
+}
+
+#addFormHeader, #editFormHeader {
 
     height: 60px;
     grid-column: 1/-1;
@@ -275,13 +285,13 @@ body {
 
 }
 
-#addFormTitle {
+#addFormTitle, #editFormTitle {
 
     display: grid;
     margin: 20px;
 }
 
-#addFormHeader img {
+#addFormHeader img , #editFormHeader img{
 
     align-self: flex-start;
     grid-row: 1;
@@ -514,7 +524,8 @@ textarea:focus {
 
 #content,
 .description,
-#addFormContainer {
+#addFormContainer,
+#editFormContainer {
 
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   

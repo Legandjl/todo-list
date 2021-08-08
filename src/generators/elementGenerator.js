@@ -4,33 +4,43 @@ import {
 import bin from ".././images/bin.png"
 import edit from ".././images/edit.png"
 import close from ".././images/close.png"
-import {   
-    showDescription,   
-    closeForm,
-    closeDescription
+import {
+    showDescription,
+    editTodo,
+    closeWindow
 } from "../dom"
 import {
     removeTodo,
     getTodo,
-    todoSubmit
+    todoSubmit,
 } from "../logic"
 
-let generateFormContainer = () => {
+let generateContainer = (containerId, headerId, headerTitle, headerText) => {
 
     let formClose = new Image();
     formClose.src = close;
-
-    let formContainer = divGenerator.createDiv("addFormContainer");
-    let formHeader = divGenerator.createDiv("addFormHeader");
-    let formHeaderTitle = divGenerator.createDiv("addFormTitle");
-    formHeaderTitle.innerText = "Add New";
+    let formContainer = divGenerator.createDiv(containerId);
+    let formHeader = divGenerator.createDiv(headerId);
+    let formHeaderTitle = divGenerator.createDiv(headerTitle);
+    formHeaderTitle.innerText = headerText
     formHeader.append(formHeaderTitle);
     formHeader.append(formClose);
-    formClose.addEventListener("click", closeForm);
-    let formSidebar = divGenerator.createDiv("addFormSidebar");
     formContainer.append(formHeader);
-    formContainer.append(formSidebar);   
+    formClose.addEventListener("click", closeWindow);
+    return formContainer;
+}
 
+let generateAddFormContainer = () => {
+
+    let formContainer = generateContainer("addFormContainer", "addFormHeader", "addFormTitle", "Add New");
+    let formSidebar = divGenerator.createDiv("addFormSidebar");
+    formContainer.append(formSidebar);
+    return formContainer;
+}
+
+let generateEditFormContainer = () => {
+
+    let formContainer = generateContainer("editFormContainer", "editFormHeader", "editFormTitle", "Edit")
     return formContainer;
 }
 
@@ -44,22 +54,23 @@ let generateTodoForm = (formId) => {
     title.placeholder = "Title: Call the bank"
     title.classList.add("title");
 
-    let desc = document.createElement("textarea");  
+    let desc = document.createElement("textarea");
     desc.placeholder = "Description: e.g reason for calling..."
     desc.classList.add("desc");
 
     let date = document.createElement("input");
     date.type = "date";
     date.classList.add("formDate");
+    
     //priority
 
     let radioWrap = divGenerator.createDiv("radioWrap");
-    let highPrio = generateRadio("High", "priority", "highPrio");  
+    let highPrio = generateRadio("High", "priority", "highPrio");
     let highPrioLabel = generateRadioLabel(highPrio);
-    let lowPrio = generateRadio("Low", "priority", "lowPrio");  
+    let lowPrio = generateRadio("Low", "priority", "lowPrio");
     lowPrio.checked = true;
     let lowPrioLabel = generateRadioLabel(lowPrio);
- 
+
     let radioElements = [lowPrioLabel, lowPrio, highPrioLabel, highPrio];
 
     radioElements.forEach((element) => {
@@ -70,9 +81,9 @@ let generateTodoForm = (formId) => {
     let label = divGenerator.createDiv("priorityLabel");
     label.innerText = "Priority: "
 
-    let priorityWrap = divGenerator.createDiv("priorityWrap");    
+    let priorityWrap = divGenerator.createDiv("priorityWrap");
     priorityWrap.append(label);
-    priorityWrap.append(radioWrap);  
+    priorityWrap.append(radioWrap);
 
     let submitButton = document.createElement("input")
     submitButton.value = "Add";
@@ -85,7 +96,7 @@ let generateTodoForm = (formId) => {
     footerElements.forEach((element) => {
 
         formFooter.append(element);
-    }) 
+    })
 
     let formElements = [title, desc, formFooter];
 
@@ -116,13 +127,12 @@ let generateRadio = (value, name, id) => {
 let generateRadioLabel = (radio) => {
 
     let label = document.createElement("label");
-    label.htmlFor = radio.id;    
+    label.htmlFor = radio.id;
     label.innerText = radio.value;
 
     return label;
 
 }
-
 
 let generateTodoElement = function (todo) {
 
@@ -165,23 +175,24 @@ let generateTodoElement = function (todo) {
     todoContainer.setAttribute("data-id", todo.getIdentifier());
 
     binIcon.addEventListener("click", removeTodo);
+    editIcon.addEventListener("click", editTodo);
     checkBox.addEventListener("change", todo.setCompleted);
     descButton.addEventListener("click", showDescription);
 
-    if(todo.getPriority() == "High") {
+    if (todo.getPriority() == "High") {
 
         todoContainer.classList.add("highPriorityIndicator");
         return todoContainer;
     }
 
-    todoContainer.classList.add("lowPriorityIndicator")   ;
+    todoContainer.classList.add("lowPriorityIndicator");
 
     return todoContainer;
 }
 
 let generateDescription = (todoId) => {
 
-    let todo = getTodo(todoId);    
+    let todo = getTodo(todoId);
 
     let description = divGenerator.createDivWithClass("description");
     let descHeader = divGenerator.createDivWithClass("descriptionHeader");
@@ -211,15 +222,15 @@ let generateDescription = (todoId) => {
     description.append(descHeader);
     description.append(descBody);
     description.append(descFooter);
-
-    windowClose.addEventListener("click", closeDescription);
+    windowClose.addEventListener("click", closeWindow);
 
     return description;
 
 }
 
 export {
-    generateFormContainer,
+    generateAddFormContainer,
+    generateEditFormContainer,
     generateTodoElement,
     generateDescription,
     generateTodoForm

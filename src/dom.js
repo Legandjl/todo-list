@@ -7,10 +7,11 @@ import {
     updateToday,
 } from "./logic"
 import {
-    generateFormContainer,
+    generateAddFormContainer,
     generateTodoElement,
     generateDescription,
-    generateTodoForm
+    generateTodoForm,
+    generateEditFormContainer
 } from "./generators/elementGenerator";
 
 let locked = false;
@@ -47,12 +48,6 @@ let showDescription = (e) => {
 
 }
 
-let closeDescription = (e) => {
-
-    removeFromDisplay(document.querySelector(".description"));
-    locked = false;
-}
-
 let openForm = () => {
 
     if (locked == true) {
@@ -61,21 +56,35 @@ let openForm = () => {
     }
 
     locked = true;
-    let formContainer = generateFormContainer();
+    let formContainer = generateAddFormContainer();
     let todoForm = generateTodoForm("todoForm");
     formContainer.append(todoForm);
     document.body.appendChild(formContainer);
 }
 
-let closeForm = () => {
+let closeWindow = (e) => {
 
-    document.querySelector("#addFormContainer").remove();
+    let element = e.target.parentElement.parentElement;
+    element.remove();
     locked = false;
 }
 
 let getDisplay = () => {
 
     return document.querySelector("#display");
+}
+
+let editTodo = () => {
+
+    if(locked == true) {
+
+        return;
+    }
+
+    locked == true;
+
+    let formContainer = generateEditFormContainer();
+    document.body.appendChild(formContainer);    
 }
 
 let initialLoad = function () {
@@ -131,7 +140,7 @@ export {
     setDisplay,
     removeFromDisplay,
     clearDisplay,
-    showDescription,
-    closeDescription,
-    closeForm
+    showDescription, 
+    editTodo,
+    closeWindow
 }
