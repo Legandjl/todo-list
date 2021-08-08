@@ -2,11 +2,16 @@ refactor opendesc and openform
 
 button issue when clicking radio
 
+possibly make class names dynamic for forms - so i can have diff styles that style the same set of elements (ie generate form for desc works, but uses diff css classes)
+
+//partly implemented - added id param to formgen
+
 clean up css/ clean up todoform
 
-priority needs labels
 
-add priority indicicator to todo element
+
+
+
 
 implement edit function
 
@@ -17,3 +22,4 @@ add counter of uncompleted todos - display in menu next to title (ie today : 3)
 add titles to form - create project, todo or note
 
 refactor 
+

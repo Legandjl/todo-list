@@ -32,7 +32,7 @@ let todoSubmit = function (e) {
 
     for (let x = 0; x < submitted.length; x++) {
 
-        if (submitted[x].type == "text") {
+        if (submitted[x].type == "text" || submitted[x].type == "textarea") {
 
             todoElements.push(submitted[x].value)
         }

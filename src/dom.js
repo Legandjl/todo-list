@@ -7,9 +7,10 @@ import {
     updateToday,
 } from "./logic"
 import {
-    generateForm,
+    generateFormContainer,
     generateTodoElement,
-    generateDescription
+    generateDescription,
+    generateTodoForm
 } from "./generators/elementGenerator";
 
 let locked = false;
@@ -60,9 +61,10 @@ let openForm = () => {
     }
 
     locked = true;
-    let formContainer = generateForm();
+    let formContainer = generateFormContainer();
+    let todoForm = generateTodoForm("todoForm");
+    formContainer.append(todoForm);
     document.body.appendChild(formContainer);
-
 }
 
 let closeForm = () => {

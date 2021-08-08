@@ -15,23 +15,36 @@ import {
     todoSubmit
 } from "../logic"
 
-let generateForm = () => {
+let generateFormContainer = () => {
 
     let formClose = new Image();
     formClose.src = close;
 
     let formContainer = divGenerator.createDiv("addFormContainer");
+    let formHeader = divGenerator.createDiv("addFormHeader");
+    let formHeaderTitle = divGenerator.createDiv("addFormTitle");
+    formHeaderTitle.innerText = "Add New";
+    formHeader.append(formHeaderTitle);
+    formHeader.append(formClose);
+    formClose.addEventListener("click", closeForm);
+    let formSidebar = divGenerator.createDiv("addFormSidebar");
+    formContainer.append(formHeader);
+    formContainer.append(formSidebar);   
+
+    return formContainer;
+}
+
+let generateTodoForm = (formId) => {
 
     let form = document.createElement("FORM");
-    form.id = "todoForm"
+    form.id = formId;
 
     let title = document.createElement("input");
     title.type = "text";
     title.placeholder = "Title: Call the bank"
     title.classList.add("title");
 
-    let desc = document.createElement("input");
-    desc.type = "text";
+    let desc = document.createElement("textarea");  
     desc.placeholder = "Description: e.g reason for calling..."
     desc.classList.add("desc");
 
@@ -41,23 +54,20 @@ let generateForm = () => {
     //priority
 
     let radioWrap = divGenerator.createDiv("radioWrap");
-    let highPrio = document.createElement("input");
-    highPrio.type = "radio";
-    highPrio.value = "high";
-    highPrio.name = "priority";
-    highPrio.id = "highPrio";
-    highPrio.classList.add("radioButton")
-    let lowPrio = document.createElement("input");
-    lowPrio.type = "radio";
-    lowPrio.value = "low";
-    lowPrio.name = "priority";
-    lowPrio.id = "lowPrio"
-    lowPrio.classList.add("radioButton")
+    let highPrio = generateRadio("High", "priority", "highPrio");  
+    let highPrioLabel = generateRadioLabel(highPrio);
+    let lowPrio = generateRadio("Low", "priority", "lowPrio");  
+    lowPrio.checked = true;
+    let lowPrioLabel = generateRadioLabel(lowPrio);
+ 
+    let radioElements = [lowPrioLabel, lowPrio, highPrioLabel, highPrio];
 
-    radioWrap.append(highPrio);
-    radioWrap.append(lowPrio);
+    radioElements.forEach((element) => {
 
-    let label = divGenerator.createDiv("prioityLabel");
+        radioWrap.append(element);
+    })
+
+    let label = divGenerator.createDiv("priorityLabel");
     label.innerText = "Priority: "
 
     let priorityWrap = divGenerator.createDiv("priorityWrap");    
@@ -65,31 +75,54 @@ let generateForm = () => {
     priorityWrap.append(radioWrap);  
 
     let submitButton = document.createElement("input")
+    submitButton.value = "Add";
     submitButton.setAttribute("type", "submit");
     submitButton.id = "todoSubmit";
 
-    let toAppend = [title, desc, date, priorityWrap, submitButton];
+    let formFooter = divGenerator.createDiv("addFormFooter");
 
-    toAppend.forEach((item) => {
+    let footerElements = [date, priorityWrap, submitButton];
+    footerElements.forEach((element) => {
+
+        formFooter.append(element);
+    }) 
+
+    let formElements = [title, desc, formFooter];
+
+    formElements.forEach((item) => {
 
         form.append(item);
     })
 
-    let formHeader = divGenerator.createDiv("addFormHeader");
-    let formHeaderTitle = divGenerator.createDiv("addFormTitle");
-    formHeaderTitle.innerText = "Add New";
-    formHeader.append(formHeaderTitle);
-    formHeader.append(formClose);
-    formClose.addEventListener("click", closeForm);
-
-    let formSidebar = divGenerator.createDiv("addFormSidebar");
-    formContainer.append(form);
-    formContainer.append(formHeader);
-    formContainer.append(formSidebar);
     form.addEventListener("submit", todoSubmit);
 
-    return formContainer;
+    return form;
 }
+
+let generateRadio = (value, name, id) => {
+
+    console.log("radioing");
+
+    let radioButton = document.createElement("input");
+    radioButton.type = "radio";
+    radioButton.value = value;
+    radioButton.name = name;
+    radioButton.id = id;
+    radioButton.classList.add("radioButton");
+
+    return radioButton;
+}
+
+let generateRadioLabel = (radio) => {
+
+    let label = document.createElement("label");
+    label.htmlFor = radio.id;    
+    label.innerText = radio.value;
+
+    return label;
+
+}
+
 
 let generateTodoElement = function (todo) {
 
@@ -135,6 +168,13 @@ let generateTodoElement = function (todo) {
     checkBox.addEventListener("change", todo.setCompleted);
     descButton.addEventListener("click", showDescription);
 
+    if(todo.getPriority() == "High") {
+
+        todoContainer.classList.add("highPriorityIndicator");
+        return todoContainer;
+    }
+
+    todoContainer.classList.add("lowPriorityIndicator")   ;
 
     return todoContainer;
 }
@@ -179,7 +219,8 @@ let generateDescription = (todoId) => {
 }
 
 export {
-    generateForm,
+    generateFormContainer,
     generateTodoElement,
-    generateDescription
+    generateDescription,
+    generateTodoForm
 }
