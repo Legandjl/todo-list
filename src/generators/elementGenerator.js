@@ -15,7 +15,8 @@ import {
     getTodo
 } from "../logic"
 
-let generateContainer = (containerId, headerId, headerTitle, headerText) => {
+//generates a container to hold form elements
+let generateFormContainer = (containerId, headerId, headerTitle, headerText) => {
 
     let formClose = new Image();
     formClose.src = close;
@@ -30,21 +31,23 @@ let generateContainer = (containerId, headerId, headerTitle, headerText) => {
     formClose.addEventListener("click", closeWindow);
     return formContainer;
 }
-
+//generates a form container with a sidebar to hold all add new options
 let generateAddFormContainer = () => {
 
-    let formContainer = generateContainer("addFormContainer", "addFormHeader", "addFormTitle", "Add New");
+    let formContainer = generateFormContainer("addFormContainer", "addFormHeader", "addFormTitle", "Add New");
     let formSidebar = divGenerator.createDiv("addFormSidebar");
     formContainer.append(formSidebar);
     return formContainer;
 }
 
+//generates a form container with no sidebar as not required, this form is only for editing a specific todo
 let generateEditFormContainer = () => {
 
-    let formContainer = generateContainer("editFormContainer", "editFormHeader", "editFormTitle", "Edit")
+    let formContainer = generateFormContainer("editFormContainer", "editFormHeader", "editFormTitle", "Edit")
     return formContainer;
 }
 
+//form with hidden ID parameter for accessing specific todo item for edit
 let generateEditForm = (formId, callback, indexNum) => {
 
     let form = document.createElement("FORM");
@@ -117,6 +120,8 @@ let generateEditForm = (formId, callback, indexNum) => {
 
 }
 
+//form without ID parameter as not required, due to this form being for a new todo
+
 let generateForm = (formId, callback) => {
 
     let form = document.createElement("FORM");
@@ -183,6 +188,7 @@ let generateForm = (formId, callback) => {
     return form;
 }
 
+//takes a todo object and pulls the relevant data from it for dom display
 let createTodoElement = (todo) => {
     
     let todoContainer = divGenerator.createDivWithClass("toDoContainer");
@@ -250,6 +256,7 @@ let createTodoElement = (todo) => {
     
 }
 
+//takes a todo id and generates a decription from it for dom display
 let generateDescription = (todoId) => {
 
     let todo = getTodo(todoId);
@@ -289,6 +296,7 @@ let generateDescription = (todoId) => {
 
 }
 
+//helpers for creating radio items for the forms
 let generateRadio = (value, name, id) => {
 
     let radioButton = document.createElement("input");

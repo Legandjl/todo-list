@@ -6,8 +6,7 @@ import {
     updateHome,
     updateToday,
     addTodo,
-    editTodo,
-    getTodo
+    editTodo 
 } from "./logic"
 import {
     generateAddFormContainer,
@@ -20,22 +19,22 @@ import {
 
 let locked = false;
 
-let updateTodoList = function (todo) {
+let updateTodoList = function (todoElement) {
 
-    let todoElement = createTodoElement(todo);
+    
     getDisplay().append(todoElement);
 }
-
+//removes a specific dom element from the display
 let removeFromDisplay = (element) => {
 
     element.remove();
 }
-
+//calls clear element on getDisplay()
 let clearDisplay = () => {
 
     clearElement(getDisplay());
 }
-
+//removes all children of element
 let clearElement = (element) => {
 
     while (element.firstChild) {
@@ -44,6 +43,7 @@ let clearElement = (element) => {
 
 }
 
+//fires when details button clicked
 let showDescription = (e) => {
 
     if (locked == true) {
@@ -72,7 +72,7 @@ let addNewButtonClicked = () => {
     formContainer.append(todoForm);
     document.body.appendChild(formContainer);
 }
-
+//fires when edit button is clicked (event set up in createTodoElement - elementgenerators.js)
 let editButtonClicked = (e) => {
 
     let id = e.target.parentElement.parentElement.dataset.id;

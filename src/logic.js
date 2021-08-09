@@ -4,6 +4,14 @@ import {
     clearDisplay
 } from "./dom"
 import {
+    generateAddFormContainer,
+    generateDescription,
+    generateForm,
+    generateEditFormContainer,    
+    createTodoElement,
+    generateEditForm, 
+} from "./generators/elementGenerator";
+import {
     objectGenerator
 } from "./objectFactory"
 import {
@@ -21,7 +29,6 @@ let titleClick = function (e) {
 
     //will update display to the chosen module (ie projects, notes etc)  
 }
-
 
 let generateTodo = (elements) => {
 
@@ -61,10 +68,9 @@ let addTodo = (e) => {
     todoList.push(todo);
     let id = todoList.indexOf(todo);
     todo.setIdentifier(id);
-    updateTodoList(todo);
+    updateTodoList(createTodoElement(todo));
     e.preventDefault();
 }
-
 
 let editTodo = (e) => {    
 
@@ -110,7 +116,7 @@ let updateHome = () => {
 
     todoList.forEach((todo) => {
 
-        updateTodoList(todo);
+        updateTodoList(createTodoElement(todo));
 
     })
 }
@@ -126,10 +132,10 @@ let updateToday = () => {
 
     todaysTodos.forEach((todo) => {
 
-        updateTodoList(todo)
+        updateTodoList(createTodoElement(todo));
     });
 }
-
+//returns todo at index id
 let getTodo = (id) => {
 
     console.log("checking")
@@ -143,9 +149,7 @@ let getTodo = (id) => {
 }
 
 export {
-
     titleClick,
-
     removeTodo,
     updateHome,
     updateToday,
