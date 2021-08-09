@@ -1,6 +1,6 @@
 import {
     removeFromDisplay,
-    setDisplay,   
+    updateTodoList,
     clearDisplay
 } from "./dom"
 import {
@@ -22,13 +22,13 @@ let titleClick = function (e) {
     //will update display to the chosen module (ie projects, notes etc)  
 }
 
-let todoSubmit = function (e) {
+let generateTodo = (elements) => {
 
-    let submitted = e.target.elements;
+    let submitted = elements;
     let todoElements = [];
-    let todoDate = "";
-    let todoPriority = "low";
-    
+    let todoDate;
+    let todoPriority;
+    let id;
 
     for (let x = 0; x < submitted.length; x++) {
 
@@ -42,26 +42,50 @@ let todoSubmit = function (e) {
             todoDate = submitted[x].value;
         }
 
-        if(submitted[x].type == "radio" && submitted[x].checked == true) {
+        if (submitted[x].type == "radio" && submitted[x].checked == true) {
+
+            console.log("here");
 
             todoPriority = submitted[x].value;
-           
+
         }
     }
 
-    let newTodo = objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, todoPriority);
-    addTodo(newTodo);
+    return objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, todoPriority); //return this
+}
 
-    let id = todoList.indexOf(newTodo);
-    newTodo.setIdentifier(id);
+let addTodo = (e) => {    
 
-    setDisplay(newTodo);
+    let todo = generateTodo(e.target.elements);
+    todoList.push(todo);
+    let id = todoList.indexOf(todo);
+    todo.setIdentifier(id);
+    updateTodoList(todo);
     e.preventDefault();
 }
 
-let addTodo = (todo) => {
+let editTodo = (e) => {    
 
-    todoList.push(todo);
+    let elements = e.target.elements;
+    let id;
+
+    for (let x = 0; x < elements.length; x++) {
+
+        if (elements[x].type == "hidden") {
+
+            console.log("im here an firing")
+
+            id = elements[x].value
+        }
+    }
+
+    let todo = generateTodo(e.target.elements)
+    let index = id;
+    todo.setIdentifier(id);
+    todoList.splice(index, 1, todo);
+    updateHome();
+
+    e.preventDefault();
 }
 
 let removeTodo = (e) => {
@@ -84,7 +108,7 @@ let updateHome = () => {
 
     todoList.forEach((todo) => {
 
-        setDisplay(todo);
+        updateTodoList(todo);
 
     })
 }
@@ -100,33 +124,19 @@ let updateToday = () => {
 
     todaysTodos.forEach((todo) => {
 
-        setDisplay(todo)
+        updateTodoList(todo)
     });
 }
 
-let getTodo = (id) => {
 
-    console.log("checking")
-
-    let newTodo = todoList.filter((todo) => {
-
-        return todo.getIdentifier() == id;
-    })
-
-    console.log(newTodo[0].getIdentifier())
-
-
-    return newTodo[0];
-
-
-}
 
 export {
-   
+
     titleClick,
-    todoSubmit,
+
     removeTodo,
     updateHome,
     updateToday,
-    getTodo
+    addTodo,
+    editTodo
 }

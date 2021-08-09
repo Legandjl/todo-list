@@ -5,20 +5,23 @@ import {
     titleClick,
     updateHome,
     updateToday,
+    addTodo,
+    editTodo
 } from "./logic"
 import {
     generateAddFormContainer,
-    generateTodoElement,
     generateDescription,
-    generateTodoForm,
-    generateEditFormContainer
+    generateForm,
+    generateEditFormContainer,    
+    createTodoElement,
+    generateEditForm, 
 } from "./generators/elementGenerator";
 
 let locked = false;
 
-let setDisplay = function (todo) {
+let updateTodoList = function (todo) {
 
-    let todoElement = generateTodoElement(todo);
+    let todoElement = createTodoElement(todo);
     getDisplay().append(todoElement);
 }
 
@@ -28,9 +31,16 @@ let removeFromDisplay = (element) => {
 }
 
 let clearDisplay = () => {
-    while (getDisplay().firstChild) {
-        getDisplay().removeChild(display.firstChild);
+
+    clearElement(getDisplay());
+}
+
+let clearElement = (element) => {
+
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
     }
+
 }
 
 let showDescription = (e) => {
@@ -48,7 +58,7 @@ let showDescription = (e) => {
 
 }
 
-let openForm = () => {
+let addNewButtonClicked = () => {
 
     if (locked == true) {
 
@@ -57,9 +67,29 @@ let openForm = () => {
 
     locked = true;
     let formContainer = generateAddFormContainer();
-    let todoForm = generateTodoForm("todoForm");
+    let todoForm = generateForm("todoForm", addTodo);
     formContainer.append(todoForm);
     document.body.appendChild(formContainer);
+}
+
+let editButtonClicked = (e) => {
+
+    let id = e.target.parentElement.parentElement.dataset.id;
+
+  //remove todo first, then generate a new one and add it
+  //or edit todo object to let you change its state
+
+  if (locked == true) {
+
+      return;
+  }
+
+  locked == true;
+
+  let formContainer = generateEditFormContainer();
+  let form = generateEditForm("editTodoForm", editTodo, id);
+  formContainer.append(form);
+  document.body.appendChild(formContainer);
 }
 
 let closeWindow = (e) => {
@@ -74,18 +104,6 @@ let getDisplay = () => {
     return document.querySelector("#display");
 }
 
-let editTodo = () => {
-
-    if(locked == true) {
-
-        return;
-    }
-
-    locked == true;
-
-    let formContainer = generateEditFormContainer();
-    document.body.appendChild(formContainer);    
-}
 
 let initialLoad = function () {
 
@@ -128,7 +146,7 @@ let initialLoad = function () {
         currentTitle.addEventListener("click", titleClick);
     })
 
-    addNewButton.addEventListener("click", openForm);
+    addNewButton.addEventListener("click", addNewButtonClicked);
 
     document.querySelector("#Home").addEventListener("click", updateHome);
 
@@ -137,10 +155,11 @@ let initialLoad = function () {
 
 export {
     initialLoad,
-    setDisplay,
+    updateTodoList,
     removeFromDisplay,
     clearDisplay,
-    showDescription, 
-    editTodo,
-    closeWindow
+    showDescription,
+    editButtonClicked,
+    closeWindow,
+    clearElement
 }

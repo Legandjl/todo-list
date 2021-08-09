@@ -8,12 +8,10 @@ possibly make class names dynamic for forms - so i can have diff styles that sty
 
 clean up css/ clean up todoform
 
+overflow needs to be hidden in details window
 
 
-
-
-
-implement edit function
+implement edit function - container implemented, need to add the form 
 
 sort by week
 
@@ -21,5 +19,85 @@ add counter of uncompleted todos - display in menu next to title (ie today : 3)
 
 add titles to form - create project, todo or note
 
-refactor 
+refactor description
 
+edit todo - get the container then switch out the child (the todo);
+container.remove children, then container.addTodo
+
+
+need to pull values from form, update stored todo, append updated version to already existing container. 
+need ti find a way to get the container and finalised todo in the same spot to append
+
+1 edit todo from dom 
+
+let editTodo = (e) => {
+
+
+    if (locked == true) {
+
+        return;
+    }
+
+
+    let container = e.target.parentElement.parentElement;
+
+    locked == true;
+
+    let formContainer = generateEditFormContainer();
+    let form = generateForm("editTodoForm", addTodo); //this fires on submit
+    formContainer.append(form);
+    document.body.appendChild(formContainer);
+}
+
+on submit need to generate a todo with the contents, then swap it out for the one that is already stored 
+
+2 generateForm
+
+3 addtodo // possibly just switch them out in logic, then it can return to the original func and append there?
+
+split form into two generate form functions, one with id param and one without?
+
+let addTodo = (e) => { 
+
+    let todo = generateTodo(e.target.elements);
+    todoList.push(todo);
+    let id = todoList.indexOf(todo);
+    todo.setIdentifier(id);
+    updateTodoList(todo);
+    e.preventDefault();
+}
+
+5 generateTodo
+
+let generateTodo = (elements) => {
+
+    let submitted = elements;
+    let todoElements = [];
+    let todoDate;
+    let todoPriority;    
+
+    for (let x = 0; x < submitted.length; x++) {
+
+        if (submitted[x].type == "text" || submitted[x].type == "textarea") {
+
+            todoElements.push(submitted[x].value)
+        }
+
+        if (submitted[x].type == "date") {
+
+            todoDate = submitted[x].value;
+        }
+
+        if(submitted[x].type == "radio" && submitted[x].checked == true) {
+
+            todoPriority = submitted[x].value;
+           
+        }
+    }
+
+    return objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, todoPriority); //return this
+}
+
+6 updatetodolist //appended to display - this needs to be append to original container
+
+make them always srted by date

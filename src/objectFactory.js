@@ -78,7 +78,6 @@ const objectGenerator = function () {
     const createToDo = function (title, desc, date, priority) {
 
         return Todo(title, desc, date, priority);
-
     }
 
     return {

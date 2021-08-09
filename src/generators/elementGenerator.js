@@ -6,19 +6,20 @@ import edit from ".././images/edit.png"
 import close from ".././images/close.png"
 import {
     showDescription,
-    editTodo,
-    closeWindow
+    editButtonClicked,
+    closeWindow,
+    clearElement
 } from "../dom"
 import {
     removeTodo,
-    getTodo,
-    todoSubmit,
+    getTodo
 } from "../logic"
 
 let generateContainer = (containerId, headerId, headerTitle, headerText) => {
 
     let formClose = new Image();
     formClose.src = close;
+    formClose.classList.add("windowClose");
     let formContainer = divGenerator.createDiv(containerId);
     let formHeader = divGenerator.createDiv(headerId);
     let formHeaderTitle = divGenerator.createDiv(headerTitle);
@@ -44,7 +45,7 @@ let generateEditFormContainer = () => {
     return formContainer;
 }
 
-let generateTodoForm = (formId) => {
+let generateEditForm = (formId, callback, indexNum) => {
 
     let form = document.createElement("FORM");
     form.id = formId;
@@ -61,10 +62,14 @@ let generateTodoForm = (formId) => {
     let date = document.createElement("input");
     date.type = "date";
     date.classList.add("formDate");
-    
+
+
+    let id = document.createElement("input");
+    id.type = "hidden";
+    id.value = indexNum;
     //priority
 
-    let radioWrap = divGenerator.createDiv("radioWrap");
+    let radioWrap = divGenerator.createDivWithClass("radioWrap");
     let highPrio = generateRadio("High", "priority", "highPrio");
     let highPrioLabel = generateRadioLabel(highPrio);
     let lowPrio = generateRadio("Low", "priority", "lowPrio");
@@ -81,7 +86,75 @@ let generateTodoForm = (formId) => {
     let label = divGenerator.createDiv("priorityLabel");
     label.innerText = "Priority: "
 
-    let priorityWrap = divGenerator.createDiv("priorityWrap");
+    let priorityWrap = divGenerator.createDivWithClass("priorityWrap");
+    priorityWrap.append(label);
+    priorityWrap.append(radioWrap);
+
+    let submitButton = document.createElement("input")
+    submitButton.value = "Add";
+    submitButton.setAttribute("type", "submit");
+    submitButton.id = "todoSubmit";
+
+    let formFooter = divGenerator.createDiv("addFormFooter");
+
+    let footerElements = [date, priorityWrap, submitButton];
+    footerElements.forEach((element) => {
+
+        formFooter.append(element);
+    })
+
+    let formElements = [title, desc, formFooter, id];
+
+    formElements.forEach((item) => {
+
+        form.append(item);
+    })
+
+    form.addEventListener("submit", callback);
+
+    return form;
+
+
+}
+
+let generateForm = (formId, callback) => {
+
+    let form = document.createElement("FORM");
+    form.id = formId;
+
+    let title = document.createElement("input");
+    title.type = "text";
+    title.placeholder = "Title: Call the bank"
+    title.classList.add("title");
+
+    let desc = document.createElement("textarea");
+    desc.placeholder = "Description: e.g reason for calling..."
+    desc.classList.add("desc");
+
+    let date = document.createElement("input");
+    date.type = "date";
+    date.classList.add("formDate");
+
+    //priority
+
+    let radioWrap = divGenerator.createDivWithClass("radioWrap");
+    let highPrio = generateRadio("High", "priority", "highPrio");
+    let highPrioLabel = generateRadioLabel(highPrio);
+    let lowPrio = generateRadio("Low", "priority", "lowPrio");
+    lowPrio.checked = true;
+    let lowPrioLabel = generateRadioLabel(lowPrio);
+
+    let radioElements = [lowPrioLabel, lowPrio, highPrioLabel, highPrio];
+
+    radioElements.forEach((element) => {
+
+        radioWrap.append(element);
+    })
+
+    let label = divGenerator.createDiv("priorityLabel");
+    label.innerText = "Priority: "
+
+    let priorityWrap = divGenerator.createDivWithClass("priorityWrap");
     priorityWrap.append(label);
     priorityWrap.append(radioWrap);
 
@@ -105,14 +178,12 @@ let generateTodoForm = (formId) => {
         form.append(item);
     })
 
-    form.addEventListener("submit", todoSubmit);
+    form.addEventListener("submit", callback);
 
     return form;
 }
 
 let generateRadio = (value, name, id) => {
-
-    console.log("radioing");
 
     let radioButton = document.createElement("input");
     radioButton.type = "radio";
@@ -120,7 +191,6 @@ let generateRadio = (value, name, id) => {
     radioButton.name = name;
     radioButton.id = id;
     radioButton.classList.add("radioButton");
-
     return radioButton;
 }
 
@@ -129,14 +199,20 @@ let generateRadioLabel = (radio) => {
     let label = document.createElement("label");
     label.htmlFor = radio.id;
     label.innerText = radio.value;
-
     return label;
-
 }
 
-let generateTodoElement = function (todo) {
+//takes a container element, clears it, and displays a todo in it
 
-    let todoContainer = divGenerator.createDivWithClass("toDoContainer");
+let updateTodoContainer = (todo, container) => {
+
+    if (!container.classList.contains("toDoContainer")) {
+
+        console.log("wrong container type");
+        return;
+    }
+
+    let todoContainer = container;
     let checkBoxWrapper = divGenerator.createDivWithClass("checkBoxWrapper"); //check if completed
     let titleWrapper = divGenerator.createDivWithClass("titleWrapper"); //will hold todo title
     let descButtonWrapper = divGenerator.createDivWithClass("descButtonWrap"); //holds a button to display a window with the description
@@ -144,13 +220,7 @@ let generateTodoElement = function (todo) {
     let checkBox = document.createElement("input");
     checkBox.type = "checkbox";
     checkBox.id = "todoCheck";
-
-    if (todo.getCompleted() == true) {
-
-        checkBox.checked = true;
-    }
-
-    let title = todo.getTitle();
+    let title;
     let descButton = document.createElement("button");
     descButton.innerText = "Details";
     let binIcon = new Image();
@@ -158,35 +228,60 @@ let generateTodoElement = function (todo) {
     let editIcon = new Image();
     editIcon.src = edit;
 
-    checkBoxWrapper.append(checkBox);
-    titleWrapper.append(title);
-    descButtonWrapper.append(descButton);
-    iconWrap.append(binIcon);
-    iconWrap.append(editIcon);
+    let setCurrentTodo = (todo) => {
 
-    let toAppend = [checkBoxWrapper, titleWrapper, descButtonWrapper, iconWrap];
+        clearElement(todoContainer);
 
-    toAppend.forEach((item) => {
+        title = todo.getTitle();
 
-        todoContainer.append(item);
+        if (todo.getCompleted() == true) {
 
-    })
+            checkBox.checked = true;
+        }
 
-    todoContainer.setAttribute("data-id", todo.getIdentifier());
+        checkBox.addEventListener("change", todo.setCompleted);
+        checkBoxWrapper.append(checkBox);
+        titleWrapper.append(title);
+        descButtonWrapper.append(descButton);
+        iconWrap.append(binIcon);
+        iconWrap.append(editIcon);
 
-    binIcon.addEventListener("click", removeTodo);
-    editIcon.addEventListener("click", editTodo);
-    checkBox.addEventListener("change", todo.setCompleted);
-    descButton.addEventListener("click", showDescription);
+        let toAppend = [checkBoxWrapper, titleWrapper, descButtonWrapper, iconWrap];
 
-    if (todo.getPriority() == "High") {
+        toAppend.forEach((item) => {
 
-        todoContainer.classList.add("highPriorityIndicator");
-        return todoContainer;
+            todoContainer.append(item);
+
+        })
+
+        todoContainer.setAttribute("data-id", todo.getIdentifier());
+        binIcon.addEventListener("click", removeTodo);
+        editIcon.addEventListener("click", editButtonClicked);
+        descButton.addEventListener("click", showDescription);
+
+        if (todo.getPriority() == "High") {
+
+            todoContainer.classList.add("highPriorityIndicator");
+            return;
+        }
+
+        todoContainer.classList.add("lowPriorityIndicator");
+
+        return;
+
     }
 
-    todoContainer.classList.add("lowPriorityIndicator");
+    setCurrentTodo(todo);
 
+    return {
+        setCurrentTodo
+    }
+}
+
+let createTodoElement = (todo) => {
+
+    let todoContainer = divGenerator.createDivWithClass("toDoContainer");
+    updateTodoContainer(todo, todoContainer);
     return todoContainer;
 }
 
@@ -205,6 +300,7 @@ let generateDescription = (todoId) => {
 
     let windowClose = new Image();
     windowClose.src = close;
+    windowClose.classList.add("windowClose")
 
     dateWrapper.innerText = "Date: " + todo.getDate();
 
@@ -231,7 +327,9 @@ let generateDescription = (todoId) => {
 export {
     generateAddFormContainer,
     generateEditFormContainer,
-    generateTodoElement,
     generateDescription,
-    generateTodoForm
+    generateForm,    
+    generateEditForm,
+    createTodoElement,
+    
 }
