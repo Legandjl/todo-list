@@ -6,7 +6,8 @@ import {
     updateHome,
     updateToday,
     addTodo,
-    editTodo
+    editTodo,
+    getTodo
 } from "./logic"
 import {
     generateAddFormContainer,
@@ -103,7 +104,6 @@ let getDisplay = () => {
 
     return document.querySelector("#display");
 }
-
 
 let initialLoad = function () {
 

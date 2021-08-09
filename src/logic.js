@@ -22,6 +22,7 @@ let titleClick = function (e) {
     //will update display to the chosen module (ie projects, notes etc)  
 }
 
+
 let generateTodo = (elements) => {
 
     let submitted = elements;
@@ -63,6 +64,7 @@ let addTodo = (e) => {
     updateTodoList(todo);
     e.preventDefault();
 }
+
 
 let editTodo = (e) => {    
 
@@ -128,7 +130,17 @@ let updateToday = () => {
     });
 }
 
+let getTodo = (id) => {
 
+    console.log("checking")
+
+    let newTodo = todoList.filter((todo) => {
+
+        return todo.getIdentifier() == id;
+    })
+
+    return newTodo[0];
+}
 
 export {
 
@@ -137,6 +149,7 @@ export {
     removeTodo,
     updateHome,
     updateToday,
+    getTodo,
     addTodo,
     editTodo
 }

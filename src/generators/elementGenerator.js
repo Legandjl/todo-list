@@ -11,7 +11,7 @@ import {
     clearElement
 } from "../dom"
 import {
-    removeTodo,
+    removeTodo, 
     getTodo
 } from "../logic"
 
@@ -183,36 +183,9 @@ let generateForm = (formId, callback) => {
     return form;
 }
 
-let generateRadio = (value, name, id) => {
-
-    let radioButton = document.createElement("input");
-    radioButton.type = "radio";
-    radioButton.value = value;
-    radioButton.name = name;
-    radioButton.id = id;
-    radioButton.classList.add("radioButton");
-    return radioButton;
-}
-
-let generateRadioLabel = (radio) => {
-
-    let label = document.createElement("label");
-    label.htmlFor = radio.id;
-    label.innerText = radio.value;
-    return label;
-}
-
-//takes a container element, clears it, and displays a todo in it
-
-let updateTodoContainer = (todo, container) => {
-
-    if (!container.classList.contains("toDoContainer")) {
-
-        console.log("wrong container type");
-        return;
-    }
-
-    let todoContainer = container;
+let createTodoElement = (todo) => {
+    
+    let todoContainer = divGenerator.createDivWithClass("toDoContainer");
     let checkBoxWrapper = divGenerator.createDivWithClass("checkBoxWrapper"); //check if completed
     let titleWrapper = divGenerator.createDivWithClass("titleWrapper"); //will hold todo title
     let descButtonWrapper = divGenerator.createDivWithClass("descButtonWrap"); //holds a button to display a window with the description
@@ -273,16 +246,8 @@ let updateTodoContainer = (todo, container) => {
 
     setCurrentTodo(todo);
 
-    return {
-        setCurrentTodo
-    }
-}
-
-let createTodoElement = (todo) => {
-
-    let todoContainer = divGenerator.createDivWithClass("toDoContainer");
-    updateTodoContainer(todo, todoContainer);
-    return todoContainer;
+    return todoContainer;       
+    
 }
 
 let generateDescription = (todoId) => {
@@ -323,6 +288,26 @@ let generateDescription = (todoId) => {
     return description;
 
 }
+
+let generateRadio = (value, name, id) => {
+
+    let radioButton = document.createElement("input");
+    radioButton.type = "radio";
+    radioButton.value = value;
+    radioButton.name = name;
+    radioButton.id = id;
+    radioButton.classList.add("radioButton");
+    return radioButton;
+}
+
+let generateRadioLabel = (radio) => {
+
+    let label = document.createElement("label");
+    label.htmlFor = radio.id;
+    label.innerText = radio.value;
+    return label;
+}
+
 
 export {
     generateAddFormContainer,
