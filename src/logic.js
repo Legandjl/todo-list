@@ -1,15 +1,10 @@
 import {
     removeFromDisplay,
-    updateTodoList,
+    appendTodoToDisplay,
     clearDisplay
 } from "./dom"
-import {
-    generateAddFormContainer,
-    generateDescription,
-    generateForm,
-    generateEditFormContainer,    
-    createTodoElement,
-    generateEditForm, 
+import {  
+    createTodoElement,  
 } from "./generators/elementGenerator";
 import {
     objectGenerator
@@ -29,7 +24,7 @@ let titleClick = function (e) {
 
     //will update display to the chosen module (ie projects, notes etc)  
 }
-
+//creates a new todo with form values
 let generateTodo = (elements) => {
 
     let submitted = elements;
@@ -52,7 +47,7 @@ let generateTodo = (elements) => {
 
         if (submitted[x].type == "radio" && submitted[x].checked == true) {
 
-            console.log("here");
+          
 
             todoPriority = submitted[x].value;
 
@@ -61,17 +56,17 @@ let generateTodo = (elements) => {
 
     return objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, todoPriority); //return this
 }
-
+//form event - on submit calls addtodo
 let addTodo = (e) => {    
 
     let todo = generateTodo(e.target.elements);
     todoList.push(todo);
     let id = todoList.indexOf(todo);
     todo.setIdentifier(id);
-    updateTodoList(createTodoElement(todo));
+    appendTodoToDisplay(createTodoElement(todo));
     e.preventDefault();
 }
-
+//form event - on submit calls edittodo
 let editTodo = (e) => {    
 
     let elements = e.target.elements;
@@ -116,7 +111,7 @@ let updateHome = () => {
 
     todoList.forEach((todo) => {
 
-        updateTodoList(createTodoElement(todo));
+        appendTodoToDisplay(createTodoElement(todo));
 
     })
 }
@@ -132,7 +127,7 @@ let updateToday = () => {
 
     todaysTodos.forEach((todo) => {
 
-        updateTodoList(createTodoElement(todo));
+        appendTodoToDisplay(createTodoElement(todo));
     });
 }
 //returns todo at index id

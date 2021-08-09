@@ -11,7 +11,7 @@ import {
     clearElement
 } from "../dom"
 import {
-    removeTodo, 
+    removeTodo,
     getTodo
 } from "../logic"
 
@@ -50,20 +50,23 @@ let generateEditFormContainer = () => {
 //form with hidden ID parameter for accessing specific todo item for edit
 let generateEditForm = (formId, callback, indexNum) => {
 
+    let todo = getTodo(indexNum);
+
     let form = document.createElement("FORM");
     form.id = formId;
 
     let title = document.createElement("input");
     title.type = "text";
-    title.placeholder = "Title: Call the bank"
+    title.value = todo.getTitle();
     title.classList.add("title");
 
     let desc = document.createElement("textarea");
-    desc.placeholder = "Description: e.g reason for calling..."
+    desc.value = todo.getDesc();
     desc.classList.add("desc");
 
     let date = document.createElement("input");
     date.type = "date";
+    date.value = todo.getDate();
     date.classList.add("formDate");
 
 
@@ -76,7 +79,16 @@ let generateEditForm = (formId, callback, indexNum) => {
     let highPrio = generateRadio("High", "priority", "highPrio");
     let highPrioLabel = generateRadioLabel(highPrio);
     let lowPrio = generateRadio("Low", "priority", "lowPrio");
-    lowPrio.checked = true;
+
+    if (todo.getPriority() == "Low") {
+
+        lowPrio.checked = true;
+
+    } else {
+
+        highPrio.checked = true;
+    }
+
     let lowPrioLabel = generateRadioLabel(lowPrio);
 
     let radioElements = [lowPrioLabel, lowPrio, highPrioLabel, highPrio];
@@ -121,7 +133,6 @@ let generateEditForm = (formId, callback, indexNum) => {
 }
 
 //form without ID parameter as not required, due to this form being for a new todo
-
 let generateForm = (formId, callback) => {
 
     let form = document.createElement("FORM");
@@ -190,7 +201,7 @@ let generateForm = (formId, callback) => {
 
 //takes a todo object and pulls the relevant data from it for dom display
 let createTodoElement = (todo) => {
-    
+
     let todoContainer = divGenerator.createDivWithClass("toDoContainer");
     let checkBoxWrapper = divGenerator.createDivWithClass("checkBoxWrapper"); //check if completed
     let titleWrapper = divGenerator.createDivWithClass("titleWrapper"); //will hold todo title
@@ -252,8 +263,8 @@ let createTodoElement = (todo) => {
 
     setCurrentTodo(todo);
 
-    return todoContainer;       
-    
+    return todoContainer;
+
 }
 
 //takes a todo id and generates a decription from it for dom display
@@ -321,8 +332,8 @@ export {
     generateAddFormContainer,
     generateEditFormContainer,
     generateDescription,
-    generateForm,    
+    generateForm,
     generateEditForm,
     createTodoElement,
-    
+
 }

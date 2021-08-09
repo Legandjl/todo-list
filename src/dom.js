@@ -12,16 +12,14 @@ import {
     generateAddFormContainer,
     generateDescription,
     generateForm,
-    generateEditFormContainer,    
-    createTodoElement,
+    generateEditFormContainer,   
     generateEditForm, 
 } from "./generators/elementGenerator";
 
 let locked = false;
 
-let updateTodoList = function (todoElement) {
+let appendTodoToDisplay = function (todoElement) {
 
-    
     getDisplay().append(todoElement);
 }
 //removes a specific dom element from the display
@@ -42,7 +40,6 @@ let clearElement = (element) => {
     }
 
 }
-
 //fires when details button clicked
 let showDescription = (e) => {
 
@@ -53,10 +50,8 @@ let showDescription = (e) => {
 
     locked = true;
 
-    let todoId = e.target.parentElement.parentElement.dataset.id;
-    let description = generateDescription(todoId);
-    document.querySelector("#content").append(description);
-
+    let todoId = e.target.parentElement.parentElement.dataset.id;  
+    document.querySelector("#content").append(generateDescription(todoId));
 }
 
 let addNewButtonClicked = () => {
@@ -76,9 +71,6 @@ let addNewButtonClicked = () => {
 let editButtonClicked = (e) => {
 
     let id = e.target.parentElement.parentElement.dataset.id;
-
-  //remove todo first, then generate a new one and add it
-  //or edit todo object to let you change its state
 
   if (locked == true) {
 
@@ -155,7 +147,7 @@ let initialLoad = function () {
 
 export {
     initialLoad,
-    updateTodoList,
+    appendTodoToDisplay,
     removeFromDisplay,
     clearDisplay,
     showDescription,
