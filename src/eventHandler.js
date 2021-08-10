@@ -3,7 +3,8 @@ import {
     getLocked,
     lock,
     clearDisplay,
-    appendTodoToDisplay
+    appendTodoToDisplay,
+    unlockWindow
 } from "./ui"
 import {
     divGenerator
@@ -17,10 +18,11 @@ import {
     generateForm
 } from "./generators/elementGenerator";
 import {
-    addTodo,
-    editTodo,
+    addTodo, 
     storageFunctions
 } from "./storage";
+import { createTodo } from "./objectFactory";
+
 
 //add form event listeners
 
@@ -68,7 +70,7 @@ let editButtonEvent = (e) => {
 
     lock();
     let formContainer = generateEditFormContainer();
-    let form = generateEditForm("editTodoForm", editTodo, id);
+    let form = generateEditForm("editTodoForm", editTodoEvent, id);
     formContainer.append(form);
     document.body.appendChild(formContainer);
 
@@ -131,7 +133,30 @@ let removeTodo = (e) => {
     storageFunctions.removeTodo(id);
 
     removeFromDisplay(e.target.parentElement.parentElement);
-    
+
+}
+
+let editTodoEvent = (e) => {
+
+    let elements = e.target.elements;
+    let id;
+
+    for (let x = 0; x < elements.length; x++) {
+
+        if (elements[x].type == "hidden") {
+
+            id = elements[x].value
+        }
+    }
+
+    let todo = createTodo(e.target.elements)
+    let index = id;
+    todo.setIdentifier(id);
+    storageFunctions.replaceTodo(index, todo);  
+    updateHome();
+    removeFromDisplay(e.target.parentElement);
+    unlockWindow();
+    e.preventDefault();
 }
 
 /*
@@ -169,5 +194,6 @@ export {
     updateWeek,
     updateToday,
     updateHome,
-    removeTodo
+    removeTodo,
+    editTodoEvent
 }

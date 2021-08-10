@@ -42,29 +42,7 @@ let addTodo = (e) => {
     unlockWindow();
     e.preventDefault();
 }
-//form event - on submit calls edittodo
-let editTodo = (e) => {
 
-    let elements = e.target.elements;
-    let id;
-
-    for (let x = 0; x < elements.length; x++) {
-
-        if (elements[x].type == "hidden") {
-
-            id = elements[x].value
-        }
-    }
-
-    let todo = createTodo(e.target.elements)
-    let index = id;
-    todo.setIdentifier(id);
-    todoList.splice(index, 1, todo);
-    updateHome();
-    removeFromDisplay(e.target.parentElement);
-    unlockWindow();
-    e.preventDefault();
-}
 
 storageFunctions.removeTodo = (id) => {    
 
@@ -86,7 +64,7 @@ storageFunctions.getTodo = (id) => {
     return newTodo[0];
 }
 
-storageFunctions.replaceTodo = () => {
+storageFunctions.replaceTodo = (index, todo) => {
 
     todoList.splice(index, 1, todo);
 }
@@ -118,7 +96,6 @@ storageFunctions.getTodoList = () => {
 
 export {
     titleClick,  
-    addTodo,
-    editTodo,
+    addTodo,   
     storageFunctions
 }
