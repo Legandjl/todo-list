@@ -1,9 +1,9 @@
 import {
     removeFromDisplay,
     appendTodoToDisplay,
-    clearDisplay,
+  
     unlockWindow,
-} from "./dom"
+} from "./ui"
 import {
     createTodoElement,
 } from "./generators/elementGenerator";
@@ -15,10 +15,13 @@ import {
     isSameWeek,
     parseISO
 } from 'date-fns'
+import { updateHome } from "./eventHandler";
 
 let currentSelection = "Home";
 
 let todoList = []; //store all todos here, then arr filter them to day/week/projects
+
+let storageFunctions = {}
 
 let titleClick = function (e) {
 
@@ -110,51 +113,9 @@ let removeTodo = (e) => {
     removeFromDisplay(e.target.parentElement.parentElement);
 }
 
-let updateHome = () => {
-
-    clearDisplay();
-
-    todoList.forEach((todo) => {
-
-        appendTodoToDisplay(createTodoElement(todo));
-
-    })
-}
-
-let updateToday = () => {
-
-    clearDisplay();
-
-    let todaysTodos = todoList.filter((element) => {
-
-        return element.getDate() == format(new Date, "yyyy-MM-dd");
-    })
-
-    todaysTodos.forEach((todo) => {
-
-        appendTodoToDisplay(createTodoElement(todo));
-    });
-}
-
-let updateWeek = () => {
-
-    clearDisplay();
-
-    let thisWeekTodos = todoList.filter((element) => {
-
-        return isSameWeek(parseISO(element.getDate()), parseISO(format(new Date, "yyyy-MM-dd")));
-    });
-
-    thisWeekTodos.forEach((todo) => {
-
-        appendTodoToDisplay(createTodoElement(todo));
-    })
-
-}
 //returns todo at index id
 let getTodo = (id) => {
-
-    console.log("checking")
+    
 
     let newTodo = todoList.filter((todo) => {
 
@@ -164,13 +125,36 @@ let getTodo = (id) => {
     return newTodo[0];
 }
 
+storageFunctions.getToday = () => {
+
+    let todaysTodos = todoList.filter((element) => {
+
+        return element.getDate() == format(new Date, "yyyy-MM-dd");
+    })
+
+    return todaysTodos;
+}
+
+storageFunctions.getWeek = () => {
+
+    let thisWeekTodos = todoList.filter((element) => {
+
+        return isSameWeek(parseISO(element.getDate()), parseISO(format(new Date, "yyyy-MM-dd")));
+    });
+
+    return  thisWeekTodos;
+}
+
+storageFunctions.getTodoList = () => {
+
+    return todoList;
+}
+
 export {
     titleClick,
-    removeTodo,
-    updateHome,
-    updateToday,
-    updateWeek,
+    removeTodo,    
     getTodo,
     addTodo,
-    editTodo
+    editTodo,
+    storageFunctions
 }

@@ -1,12 +1,15 @@
 import {
     removeFromDisplay,
     getLocked,
-    lock
-} from "./dom"
+    lock,
+    clearDisplay,
+    appendTodoToDisplay
+} from "./ui"
 import {
     divGenerator
 } from "./generators/divGenerator";
 import {
+    createTodoElement,
     generateAddFormContainer,
     generateDescription,
     generateEditForm,
@@ -15,8 +18,9 @@ import {
 } from "./generators/elementGenerator";
 import {
     addTodo,
-    editTodo
-} from "./logic";
+    editTodo,
+    storageFunctions
+} from "./storage";
 
 //add form event listeners
 
@@ -73,7 +77,6 @@ let editButtonEvent = (e) => {
 let openDescriptionWindow = (e) => {
 
     if (getLocked() == true) {
-
         return;
     }
 
@@ -83,11 +86,51 @@ let openDescriptionWindow = (e) => {
     document.querySelector("#content").append(generateDescription(todoId));
 };
 
+let updateWeek = () => {
+
+    clearDisplay();
+
+    let todoList = storageFunctions.getWeek(); 
+
+    todoList.forEach((todo) => {
+
+        appendTodoToDisplay(createTodoElement(todo));
+    }) //refactor to ui
+}
+
+let updateToday = () => {
+
+    clearDisplay();
+
+    let todoList = storageFunctions.getToday();
+
+    todoList.forEach((todo) => {
+
+        appendTodoToDisplay(createTodoElement(todo));
+    });
+}//refactor to ui /eventhandler
+
+let updateHome = () => {
+
+    clearDisplay();
+
+    let todoList = storageFunctions.getTodoList();
+
+    todoList.forEach((todo) => {
+
+        appendTodoToDisplay(createTodoElement(todo));
+
+    })
+}
+
 export {    
     addButtonEvent,
     editButtonEvent,
     openDescriptionWindow,
     addTodoForm,
     addProjectForm,
-    addNoteForm
+    addNoteForm,
+    updateWeek,
+    updateToday,
+    updateHome
 }

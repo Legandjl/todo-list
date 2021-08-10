@@ -2,13 +2,11 @@ import {
     divGenerator
 } from "./generators/divGenerator";
 import {
-    titleClick,
-    updateHome,
-    updateToday,
-    updateWeek
-} from "./logic"
+    titleClick,  
+    
+} from "./storage"
 import {
-    addButtonEvent
+    addButtonEvent, updateWeek, updateToday, updateHome
 } from "./eventHandler";
 
 let locked = false;
@@ -43,7 +41,6 @@ let clearElement = (element) => {
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
-
 }
 
 let closeWindow = (e) => {
@@ -112,6 +109,11 @@ let initialLoad = function () {
     document.querySelector("#Today").addEventListener("click", updateToday);
 
     document.querySelector("#Week").addEventListener("click", updateWeek);
+}
+
+let updateDisplay = (todoList) => {
+
+
 }
 
 export {

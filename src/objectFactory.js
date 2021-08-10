@@ -62,17 +62,6 @@ const Todo = function (title, desc, date, priority) {
         getCompleted
     }
 }
-
-const Note = (title, contents) => {
-
-
-}
-
-const Project = (title) => {
-
-
-}
-
 const objectGenerator = function () {
 
     const createToDo = function (title, desc, date, priority) {

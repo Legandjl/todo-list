@@ -7,11 +7,11 @@ import close from ".././images/close.png"
 import {
     closeWindow,
     clearElement
-} from "../dom"
+} from "../ui"
 import {
     removeTodo,
     getTodo
-} from "../logic"
+} from "../storage"
 import {
     addNoteForm,
     addProjectForm,
