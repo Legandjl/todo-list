@@ -8,16 +8,16 @@ import {
     closeWindow,
     clearElement
 } from "../ui"
-import {
-    removeTodo,
-    getTodo
+import {   
+    storageFunctions
 } from "../storage"
 import {
     addNoteForm,
     addProjectForm,
     addTodoForm,
     editButtonEvent,
-    openDescriptionWindow
+    openDescriptionWindow,
+    removeTodo
 } from "../eventHandler"
 
 //generates a container to hold form elements
@@ -73,7 +73,7 @@ let generateEditFormContainer = () => {
 //form with hidden ID parameter for accessing specific todo item for edit
 let generateEditForm = (formId, callback, indexNum) => {
 
-    let todo = getTodo(indexNum);
+    let todo = storageFunctions.getTodo(indexNum);
 
     let form = document.createElement("FORM");
     form.id = formId;
@@ -298,7 +298,7 @@ let createTodoElement = (todo) => {
 //takes a todo id and generates a decription from it for dom display
 let generateDescription = (todoId) => {
 
-    let todo = getTodo(todoId);
+    let todo = storageFunctions.getTodo(todoId);
 
     let description = divGenerator.createDivWithClass("description");
     let descHeader = divGenerator.createDivWithClass("descriptionHeader");

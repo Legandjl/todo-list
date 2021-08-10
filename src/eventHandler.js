@@ -123,6 +123,17 @@ let updateHome = () => {
 
     })
 }
+
+let removeTodo = (e) => {
+
+    let id = e.target.parentElement.parentElement.dataset.id;
+
+    storageFunctions.removeTodo(id);
+
+    removeFromDisplay(e.target.parentElement.parentElement);
+    
+}
+
 /*
 let editnewTodo = (e) => {
 
@@ -157,5 +168,6 @@ export {
     addNoteForm,
     updateWeek,
     updateToday,
-    updateHome
+    updateHome,
+    removeTodo
 }

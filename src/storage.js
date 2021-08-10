@@ -7,8 +7,7 @@ import {
     createTodoElement,
 } from "./generators/elementGenerator";
 import {
-    createTodo,
-    objectGenerator
+    createTodo,   
 } from "./objectFactory"
 import {
     format,
@@ -31,16 +30,10 @@ let titleClick = function (e) {
     console.log(currentSelection);
     //will update display to the chosen module (ie projects, notes etc)  
 }
-//creates a new todo with form values
-let generateTodo = (elements) => {
-
-    return createTodo(elements);
-}
-
 //form event - on submit calls addtodo
 let addTodo = (e) => {
 
-    let todo = generateTodo(e.target.elements);
+    let todo = createTodo(e.target.elements);
     todoList.push(todo);
     let id = todoList.indexOf(todo);
     todo.setIdentifier(id);
@@ -63,7 +56,7 @@ let editTodo = (e) => {
         }
     }
 
-    let todo = generateTodo(e.target.elements)
+    let todo = createTodo(e.target.elements)
     let index = id;
     todo.setIdentifier(id);
     todoList.splice(index, 1, todo);
@@ -73,9 +66,7 @@ let editTodo = (e) => {
     e.preventDefault();
 }
 
-let removeTodo = (e) => {
-
-    let id = e.target.parentElement.parentElement.dataset.id;
+storageFunctions.removeTodo = (id) => {    
 
     let newTodoList = todoList.filter((element) => {
 
@@ -83,11 +74,9 @@ let removeTodo = (e) => {
     })
 
     todoList = newTodoList;
-
-    removeFromDisplay(e.target.parentElement.parentElement);
 }
 //returns todo at index id
-let getTodo = (id) => {
+storageFunctions.getTodo = (id) => {
 
     let newTodo = todoList.filter((todo) => {
 
@@ -101,7 +90,7 @@ storageFunctions.replaceTodo = () => {
 
     todoList.splice(index, 1, todo);
 }
-
+//returns an array of todo with todays day
 storageFunctions.getToday = () => {
 
     let todaysTodos = todoList.filter((element) => {
@@ -111,7 +100,7 @@ storageFunctions.getToday = () => {
 
     return todaysTodos;
 }
-
+//returns an array of todos in this week
 storageFunctions.getWeek = () => {
 
     let thisWeekTodos = todoList.filter((element) => {
@@ -121,18 +110,15 @@ storageFunctions.getWeek = () => {
 
     return thisWeekTodos;
 }
-
+//returns all todos
 storageFunctions.getTodoList = () => {
 
     return todoList;
 }
 
 export {
-    titleClick,
-    removeTodo,
-    getTodo,
+    titleClick,  
     addTodo,
     editTodo,
-
     storageFunctions
 }
