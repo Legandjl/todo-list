@@ -10,19 +10,17 @@ clean up css/ clean up todoform
 
 overflow needs to be hidden in details window
 
-
-implement edit function - container implemented, need to add the form 
-
 sort by week
 
 add counter of uncompleted todos - display in menu next to title (ie today : 3)
 
 add titles to form - create project, todo or note
 
-refactor description
-
 edit todo - get the container then switch out the child (the todo);
+
 container.remove children, then container.addTodo
+
+implement projects
 
 
 

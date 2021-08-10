@@ -5,8 +5,6 @@ import bin from ".././images/bin.png"
 import edit from ".././images/edit.png"
 import close from ".././images/close.png"
 import {
-    showDescription,
-    editButtonClicked,
     closeWindow,
     clearElement
 } from "../dom"
@@ -14,6 +12,13 @@ import {
     removeTodo,
     getTodo
 } from "../logic"
+import {
+    addNoteForm,
+    addProjectForm,
+    addTodoForm,
+    editButtonEvent,
+    openDescriptionWindow
+} from "../eventHandler"
 
 //generates a container to hold form elements
 let generateFormContainer = (containerId, headerId, headerTitle, headerText) => {
@@ -31,11 +36,29 @@ let generateFormContainer = (containerId, headerId, headerTitle, headerText) => 
     formClose.addEventListener("click", closeWindow);
     return formContainer;
 }
+
 //generates a form container with a sidebar to hold all add new options
-let generateAddFormContainer = () => {
+let generateAddFormContainer = () => {  
+
+    let projectHandlers = {
+
+        "Todo":addTodoForm,
+        "Project":addProjectForm,
+        "Note":addNoteForm
+    }
 
     let formContainer = generateFormContainer("addFormContainer", "addFormHeader", "addFormTitle", "Add New");
     let formSidebar = divGenerator.createDiv("addFormSidebar");
+    let titles = ["Todo", "Project", "Note"];
+
+    titles.forEach((title) => {
+
+        let titleHolder = divGenerator.createDivWithClass("addSidebarTitle");
+        titleHolder.innerText = title;
+        titleHolder.addEventListener("click", projectHandlers[title]);
+        formSidebar.append(titleHolder);
+    })
+
     formContainer.append(formSidebar);
     return formContainer;
 }
@@ -59,15 +82,18 @@ let generateEditForm = (formId, callback, indexNum) => {
     title.type = "text";
     title.value = todo.getTitle();
     title.classList.add("title");
+    title.setAttribute("required", "");
 
     let desc = document.createElement("textarea");
     desc.value = todo.getDesc();
     desc.classList.add("desc");
+    desc.setAttribute("required", "");
 
     let date = document.createElement("input");
     date.type = "date";
     date.value = todo.getDate();
     date.classList.add("formDate");
+    date.setAttribute("required", "");
 
 
     let id = document.createElement("input");
@@ -106,7 +132,7 @@ let generateEditForm = (formId, callback, indexNum) => {
     priorityWrap.append(radioWrap);
 
     let submitButton = document.createElement("input")
-    submitButton.value = "Add";
+    submitButton.value = "Edit";
     submitButton.setAttribute("type", "submit");
     submitButton.id = "todoSubmit";
 
@@ -128,8 +154,6 @@ let generateEditForm = (formId, callback, indexNum) => {
     form.addEventListener("submit", callback);
 
     return form;
-
-
 }
 
 //form without ID parameter as not required, due to this form being for a new todo
@@ -142,14 +166,18 @@ let generateForm = (formId, callback) => {
     title.type = "text";
     title.placeholder = "Title: Call the bank"
     title.classList.add("title");
+    title.setAttribute("required", "");
 
     let desc = document.createElement("textarea");
     desc.placeholder = "Description: e.g reason for calling..."
     desc.classList.add("desc");
+    desc.setAttribute("required", "");
+
 
     let date = document.createElement("input");
     date.type = "date";
     date.classList.add("formDate");
+    date.setAttribute("required", "");
 
     //priority
 
@@ -246,8 +274,8 @@ let createTodoElement = (todo) => {
 
         todoContainer.setAttribute("data-id", todo.getIdentifier());
         binIcon.addEventListener("click", removeTodo);
-        editIcon.addEventListener("click", editButtonClicked);
-        descButton.addEventListener("click", showDescription);
+        editIcon.addEventListener("click", editButtonEvent);
+        descButton.addEventListener("click", openDescriptionWindow);
 
         if (todo.getPriority() == "High") {
 
@@ -327,7 +355,6 @@ let generateRadioLabel = (radio) => {
     return label;
 }
 
-
 export {
     generateAddFormContainer,
     generateEditFormContainer,
@@ -335,5 +362,4 @@ export {
     generateForm,
     generateEditForm,
     createTodoElement,
-
 }

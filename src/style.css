@@ -262,8 +262,8 @@ body {
 
 #addFormContainer {
 
-    min-width: 750px;
-    min-height: 400px;
+    width: 750px;
+    height: 400px;
     grid-template-columns: 1fr 3fr;
 }
 
@@ -304,16 +304,45 @@ body {
 
     grid-column: 1;
     background-color: #E0F2F0;
+    display: grid;
+    grid-template-columns: 1fr; 
+    grid-auto-rows: 60px;  
+    align-items: start;   
+
+    
+}
+
+.addSidebarTitle {
+
+    justify-items: start;
+   
+    padding:20px;
+    cursor: pointer;
+}
+
+.addSidebarTitle:hover {
+
+    scale:1.1;
+    text-decoration: underline;
 }
 /*todo add form*/
 
+#formWrapper {
+
+    height:100%;
+    display: grid;
+    grid-column: 2;
+
+
+}
+
 #todoForm {
 
-    grid-column: 2;
+  
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: repeat(4, 1fr);
-    grid-row: 2;
+  
     padding: 10px;
     grid-gap: 10px;
     justify-items: center;
@@ -538,6 +567,14 @@ textarea:focus {
     resize: none;
 
 }
+
+.sideBarTitle:hover {
+
+    scale:1.1;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 
 #content,
 .description,

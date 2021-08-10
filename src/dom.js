@@ -5,18 +5,23 @@ import {
     titleClick,
     updateHome,
     updateToday,
-    addTodo,
-    editTodo 
+    updateWeek
 } from "./logic"
 import {
-    generateAddFormContainer,
-    generateDescription,
-    generateForm,
-    generateEditFormContainer,   
-    generateEditForm, 
-} from "./generators/elementGenerator";
+    addButtonEvent
+} from "./eventHandler";
 
 let locked = false;
+
+let getLocked = () => {
+
+    return locked;
+}
+
+let lock = () => {
+
+    locked = true;
+}
 
 let appendTodoToDisplay = function (todoElement) {
 
@@ -40,55 +45,16 @@ let clearElement = (element) => {
     }
 
 }
-//fires when details button clicked
-let showDescription = (e) => {
-
-    if (locked == true) {
-
-        return;
-    }
-
-    locked = true;
-
-    let todoId = e.target.parentElement.parentElement.dataset.id;  
-    document.querySelector("#content").append(generateDescription(todoId));
-}
-
-let addNewButtonClicked = () => {
-
-    if (locked == true) {
-
-        return;
-    }
-
-    locked = true;
-    let formContainer = generateAddFormContainer();
-    let todoForm = generateForm("todoForm", addTodo);
-    formContainer.append(todoForm);
-    document.body.appendChild(formContainer);
-}
-//fires when edit button is clicked (event set up in createTodoElement - elementgenerators.js)
-let editButtonClicked = (e) => {
-
-    let id = e.target.parentElement.parentElement.dataset.id;
-
-  if (locked == true) {
-
-      return;
-  }
-
-  locked == true;
-
-  let formContainer = generateEditFormContainer();
-  let form = generateEditForm("editTodoForm", editTodo, id);
-  formContainer.append(form);
-  document.body.appendChild(formContainer);
-}
 
 let closeWindow = (e) => {
 
     let element = e.target.parentElement.parentElement;
     element.remove();
+    unlockWindow();
+}
+
+let unlockWindow = () => {
+
     locked = false;
 }
 
@@ -134,15 +100,18 @@ let initialLoad = function () {
         let currentTitle = divGenerator.createDivWithClass("sideBarTitle");
         currentTitle.id = title;
         currentTitle.innerText = title;
+        currentTitle.classList.add("sidebarTitle");
         sideContainer.appendChild(currentTitle);
         currentTitle.addEventListener("click", titleClick);
     })
 
-    addNewButton.addEventListener("click", addNewButtonClicked);
+    addNewButton.addEventListener("click", addButtonEvent);
 
     document.querySelector("#Home").addEventListener("click", updateHome);
 
     document.querySelector("#Today").addEventListener("click", updateToday);
+
+    document.querySelector("#Week").addEventListener("click", updateWeek);
 }
 
 export {
@@ -150,8 +119,9 @@ export {
     appendTodoToDisplay,
     removeFromDisplay,
     clearDisplay,
-    showDescription,
-    editButtonClicked,
     closeWindow,
-    clearElement
+    clearElement,
+    unlockWindow,
+    getLocked,
+    lock,    
 }
