@@ -2,8 +2,7 @@ import {
     divGenerator
 } from "./generators/divGenerator";
 import {
-    titleClick,  
-    
+    titleClick,      
 } from "./storage"
 import {
     addButtonEvent, updateWeek, updateToday, updateHome

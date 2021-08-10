@@ -1,13 +1,13 @@
 import {
     removeFromDisplay,
     appendTodoToDisplay,
-  
     unlockWindow,
 } from "./ui"
 import {
     createTodoElement,
 } from "./generators/elementGenerator";
 import {
+    createTodo,
     objectGenerator
 } from "./objectFactory"
 import {
@@ -15,7 +15,9 @@ import {
     isSameWeek,
     parseISO
 } from 'date-fns'
-import { updateHome } from "./eventHandler";
+import {
+    updateHome
+} from "./eventHandler";
 
 let currentSelection = "Home";
 
@@ -32,35 +34,9 @@ let titleClick = function (e) {
 //creates a new todo with form values
 let generateTodo = (elements) => {
 
-    let submitted = elements;
-    let todoElements = [];
-    let todoDate;
-    let todoPriority;
-    let id;
-
-    for (let x = 0; x < submitted.length; x++) {
-
-        if (submitted[x].type == "text" || submitted[x].type == "textarea") {
-
-            todoElements.push(submitted[x].value)
-        }
-
-        if (submitted[x].type == "date") {
-
-            todoDate = submitted[x].value;
-        }
-
-        if (submitted[x].type == "radio" && submitted[x].checked == true) {
-
-
-
-            todoPriority = submitted[x].value;
-
-        }
-    }
-
-    return objectGenerator().createToDo(todoElements[0], todoElements[1], todoDate, todoPriority); //return this
+    return createTodo(elements);
 }
+
 //form event - on submit calls addtodo
 let addTodo = (e) => {
 
@@ -82,8 +58,6 @@ let editTodo = (e) => {
     for (let x = 0; x < elements.length; x++) {
 
         if (elements[x].type == "hidden") {
-
-            console.log("im here an firing")
 
             id = elements[x].value
         }
@@ -112,10 +86,8 @@ let removeTodo = (e) => {
 
     removeFromDisplay(e.target.parentElement.parentElement);
 }
-
 //returns todo at index id
 let getTodo = (id) => {
-    
 
     let newTodo = todoList.filter((todo) => {
 
@@ -123,6 +95,11 @@ let getTodo = (id) => {
     })
 
     return newTodo[0];
+}
+
+storageFunctions.replaceTodo = () => {
+
+    todoList.splice(index, 1, todo);
 }
 
 storageFunctions.getToday = () => {
@@ -142,7 +119,7 @@ storageFunctions.getWeek = () => {
         return isSameWeek(parseISO(element.getDate()), parseISO(format(new Date, "yyyy-MM-dd")));
     });
 
-    return  thisWeekTodos;
+    return thisWeekTodos;
 }
 
 storageFunctions.getTodoList = () => {
@@ -152,9 +129,10 @@ storageFunctions.getTodoList = () => {
 
 export {
     titleClick,
-    removeTodo,    
+    removeTodo,
     getTodo,
     addTodo,
     editTodo,
+
     storageFunctions
 }

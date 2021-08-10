@@ -62,6 +62,37 @@ const Todo = function (title, desc, date, priority) {
         getCompleted
     }
 }
+
+let createTodo = (elements) => {
+
+    let submitted = elements;
+    let todoElements = [];
+    let todoDate;
+    let todoPriority;
+    let id;
+
+    for (let x = 0; x < submitted.length; x++) {
+
+        if (submitted[x].type == "text" || submitted[x].type == "textarea") {
+
+            todoElements.push(submitted[x].value)
+        }
+
+        if (submitted[x].type == "date") {
+
+            todoDate = submitted[x].value;
+        }
+
+        if (submitted[x].type == "radio" && submitted[x].checked == true) {
+
+            todoPriority = submitted[x].value;
+        }
+    }
+
+    return Todo(todoElements[0], todoElements[1], todoDate, todoPriority);
+}
+
+
 const objectGenerator = function () {
 
     const createToDo = function (title, desc, date, priority) {
@@ -76,5 +107,6 @@ const objectGenerator = function () {
 }
 
 export {
-    objectGenerator
+    objectGenerator,
+    createTodo
 }

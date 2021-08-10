@@ -96,6 +96,7 @@ let updateWeek = () => {
 
         appendTodoToDisplay(createTodoElement(todo));
     }) //refactor to ui
+
 }
 
 let updateToday = () => {
@@ -122,6 +123,30 @@ let updateHome = () => {
 
     })
 }
+/*
+let editnewTodo = (e) => {
+
+    let elements = e.target.elements;  
+   
+    let id;
+
+    for (let x = 0; x < elements.length; x++) {
+
+        if (elements[x].type == "hidden") {            
+
+            id = elements[x].value
+        }
+    }
+
+    let todo = generateTodo(e.target.elements)
+    let index = id;
+    todo.setIdentifier(id);
+    todoList.splice(index, 1, todo);
+    updateHome();
+    removeFromDisplay(e.target.parentElement);
+    unlockWindow();
+    e.preventDefault();
+}*/
 
 export {    
     addButtonEvent,
