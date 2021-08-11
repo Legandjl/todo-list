@@ -19,6 +19,7 @@ import {
     openDescriptionWindow,
     removeTodo
 } from "../modules/eventHandler"
+import { formHelpers } from "./formHelpers"
 
 //generates a container using id paramaters so it can be used in diff css styles
 let generateFormContainer = (containerId, headerId, headerTitle, headerText) => {
@@ -67,7 +68,6 @@ let generateEditFormContainer = () => {
     let formContainer = generateFormContainer("editFormContainer", "editFormHeader", "editFormTitle", "Edit")
     return formContainer;
 }
-
 //formvaluecallback is either getvaluefromtodo or getformvalues, which assign to values or placeholder respectively
 let generateForm = (formId, callback, formValueCallback, indexNum) => { 
 
@@ -95,11 +95,11 @@ let generateForm = (formId, callback, formValueCallback, indexNum) => {
     //priority
 
     let radioWrap = divGenerator.createDivWithClass("radioWrap");
-    let highPrio = generateRadio("High", "priority", "highPrio");
-    let highPrioLabel = generateRadioLabel(highPrio);
-    let lowPrio = generateRadio("Low", "priority", "lowPrio");
+    let highPrio = formHelpers.generateRadio("High", "priority", "highPrio");
+    let highPrioLabel = formHelpers.generateRadioLabel(highPrio);
+    let lowPrio = formHelpers.generateRadio("Low", "priority", "lowPrio");
     lowPrio.checked = true;
-    let lowPrioLabel = generateRadioLabel(lowPrio);
+    let lowPrioLabel = formHelpers.generateRadioLabel(lowPrio);
 
     let radioElements = [lowPrioLabel, lowPrio, highPrioLabel, highPrio];
 
@@ -244,40 +244,6 @@ let generateDescription = (todoId) => {
 
 }
 //helpers for creating radio items for the forms
-let generateRadio = (value, name, id) => {
-
-    let radioButton = document.createElement("input");
-    radioButton.type = "radio";
-    radioButton.value = value;
-    radioButton.name = name;
-    radioButton.id = id;
-    radioButton.classList.add("radioButton");
-    return radioButton;
-}
-
-let generateRadioLabel = (radio) => {
-
-    let label = document.createElement("label");
-    label.htmlFor = radio.id;
-    label.innerText = radio.value;
-    return label;
-}
-
-let getFormValuesFromTodo = (title, description, date, index) => {   
-
-    let todo = storageFunctions.getTodo(index);
-    title.value = todo.getTitle();
-    description.value = todo.getDesc();
-    date.value = todo.getDate();
-  
-}
-
-let getFormValues = (title, description, date, index) => {
-
-    title.placeholder = "Title: Call the bank";
-    description.placeholder = "Description: e.g reason for calling...";    
-}
-
 
 
 export {
@@ -285,7 +251,5 @@ export {
     generateEditFormContainer,
     generateDescription,
     generateForm,  
-    createTodoElement,
-    getFormValuesFromTodo,
-    getFormValues
+    createTodoElement,   
 }

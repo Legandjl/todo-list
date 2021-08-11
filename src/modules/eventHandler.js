@@ -14,11 +14,8 @@ import {
     createTodoElement,
     generateAddFormContainer,
     generateDescription,
-    generateEditForm,
     generateEditFormContainer,
-    generateForm,
-    getFormValues,
-    getFormValuesFromTodo
+    generateForm,  
 } from "../generators/elementGenerator";
 import {
     storageFunctions
@@ -26,6 +23,7 @@ import {
 import {
     createTodo
 } from "./objectFactory";
+import { formHelpers } from "../generators/formHelpers";
 
 //ui event handlers (buttons etc)
 
@@ -59,7 +57,7 @@ let addButtonEvent = () => {
     lock();
     let formContainer = generateAddFormContainer();
     let formDiv = divGenerator.createDiv("formWrapper");
-    let todoForm = generateForm("todoForm", addNewTodo, getFormValues);
+    let todoForm = generateForm("todoForm", addNewTodo, formHelpers.getFormValues);
     formDiv.append(todoForm);
     formContainer.append(formDiv);
     document.body.appendChild(formContainer);
@@ -75,7 +73,7 @@ let editButtonEvent = (e) => {
     let id = e.target.parentElement.parentElement.dataset.id;
     lock();
     let formContainer = generateEditFormContainer();
-    let form = generateForm("editTodoForm", editTodoEvent, getFormValuesFromTodo, id);    
+    let form = generateForm("editTodoForm", editTodoEvent, formHelpers.getFormValuesFromTodo, id);    
 
     let identifier = document.createElement("input");
     identifier.type = "hidden";
