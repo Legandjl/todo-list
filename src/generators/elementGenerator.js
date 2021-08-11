@@ -7,10 +7,10 @@ import close from ".././images/close.png"
 import {
     closeWindow,
     clearElement
-} from "../ui"
-import {   
+} from "../modules/ui"
+import {
     storageFunctions
-} from "../storage"
+} from "../modules/storage"
 import {
     addNoteForm,
     addProjectForm,
@@ -18,9 +18,9 @@ import {
     editButtonEvent,
     openDescriptionWindow,
     removeTodo
-} from "../eventHandler"
+} from "../modules/eventHandler"
 
-//generates a container to hold form elements
+//generates a container using id paramaters so it can be used in diff css styles
 let generateFormContainer = (containerId, headerId, headerTitle, headerText) => {
 
     let formClose = new Image();
@@ -36,15 +36,14 @@ let generateFormContainer = (containerId, headerId, headerTitle, headerText) => 
     formClose.addEventListener("click", closeWindow);
     return formContainer;
 }
-
-//generates a form container with a sidebar to hold all add new options
-let generateAddFormContainer = () => {  
+//generates a form container with a sidebar to hold all add new options, uses generate form container as its base
+let generateAddFormContainer = () => {
 
     let projectHandlers = {
 
-        "Todo":addTodoForm,
-        "Project":addProjectForm,
-        "Note":addNoteForm
+        "Todo": addTodoForm,
+        "Project": addProjectForm,
+        "Note": addNoteForm
     }
 
     let formContainer = generateFormContainer("addFormContainer", "addFormHeader", "addFormTitle", "Add New");
@@ -62,122 +61,36 @@ let generateAddFormContainer = () => {
     formContainer.append(formSidebar);
     return formContainer;
 }
-
-//generates a form container with no sidebar as not required, this form is only for editing a specific todo
+//generates a form container with no sidebar as not required, this form is only for editing a specific todo, uses generate form container as base
 let generateEditFormContainer = () => {
 
     let formContainer = generateFormContainer("editFormContainer", "editFormHeader", "editFormTitle", "Edit")
     return formContainer;
 }
 
-//form with hidden ID parameter for accessing specific todo item for edit
-let generateEditForm = (formId, callback, indexNum) => {
-
-    let todo = storageFunctions.getTodo(indexNum);
+//formvaluecallback is either getvaluefromtodo or getformvalues, which assign to values or placeholder respectively
+let generateForm = (formId, callback, formValueCallback, indexNum) => { 
 
     let form = document.createElement("FORM");
     form.id = formId;
 
     let title = document.createElement("input");
     title.type = "text";
-    title.value = todo.getTitle();
+
     title.classList.add("title");
     title.setAttribute("required", "");
 
     let desc = document.createElement("textarea");
-    desc.value = todo.getDesc();
+ 
     desc.classList.add("desc");
     desc.setAttribute("required", "");
 
     let date = document.createElement("input");
     date.type = "date";
-    date.value = todo.getDate();
     date.classList.add("formDate");
     date.setAttribute("required", "");
 
-
-    let id = document.createElement("input");
-    id.type = "hidden";
-    id.value = indexNum;
-    //priority
-
-    let radioWrap = divGenerator.createDivWithClass("radioWrap");
-    let highPrio = generateRadio("High", "priority", "highPrio");
-    let highPrioLabel = generateRadioLabel(highPrio);
-    let lowPrio = generateRadio("Low", "priority", "lowPrio");
-
-    if (todo.getPriority() == "Low") {
-
-        lowPrio.checked = true;
-
-    } else {
-
-        highPrio.checked = true;
-    }
-
-    let lowPrioLabel = generateRadioLabel(lowPrio);
-
-    let radioElements = [lowPrioLabel, lowPrio, highPrioLabel, highPrio];
-
-    radioElements.forEach((element) => {
-
-        radioWrap.append(element);
-    })
-
-    let label = divGenerator.createDiv("priorityLabel");
-    label.innerText = "Priority: "
-
-    let priorityWrap = divGenerator.createDivWithClass("priorityWrap");
-    priorityWrap.append(label);
-    priorityWrap.append(radioWrap);
-
-    let submitButton = document.createElement("input")
-    submitButton.value = "Edit";
-    submitButton.setAttribute("type", "submit");
-    submitButton.id = "todoSubmit";
-
-    let formFooter = divGenerator.createDiv("addFormFooter");
-
-    let footerElements = [date, priorityWrap, submitButton];
-    footerElements.forEach((element) => {
-
-        formFooter.append(element);
-    })
-
-    let formElements = [title, desc, formFooter, id];
-
-    formElements.forEach((item) => {
-
-        form.append(item);
-    })
-
-    form.addEventListener("submit", callback);
-
-    return form;
-}
-
-//form without ID parameter as not required, due to this form being for a new todo
-let generateForm = (formId, callback) => {
-
-    let form = document.createElement("FORM");
-    form.id = formId;
-
-    let title = document.createElement("input");
-    title.type = "text";
-    title.placeholder = "Title: Call the bank"
-    title.classList.add("title");
-    title.setAttribute("required", "");
-
-    let desc = document.createElement("textarea");
-    desc.placeholder = "Description: e.g reason for calling..."
-    desc.classList.add("desc");
-    desc.setAttribute("required", "");
-
-
-    let date = document.createElement("input");
-    date.type = "date";
-    date.classList.add("formDate");
-    date.setAttribute("required", "");
+    formValueCallback(title, desc, date, indexNum)
 
     //priority
 
@@ -226,7 +139,6 @@ let generateForm = (formId, callback) => {
 
     return form;
 }
-
 //takes a todo object and pulls the relevant data from it for dom display
 let createTodoElement = (todo) => {
 
@@ -286,15 +198,12 @@ let createTodoElement = (todo) => {
         todoContainer.classList.add("lowPriorityIndicator");
 
         return;
-
     }
 
     setCurrentTodo(todo);
 
     return todoContainer;
-
 }
-
 //takes a todo id and generates a decription from it for dom display
 let generateDescription = (todoId) => {
 
@@ -334,7 +243,6 @@ let generateDescription = (todoId) => {
     return description;
 
 }
-
 //helpers for creating radio items for the forms
 let generateRadio = (value, name, id) => {
 
@@ -355,11 +263,29 @@ let generateRadioLabel = (radio) => {
     return label;
 }
 
+let getFormValuesFromTodo = (title, description, date, index) => {   
+
+    let todo = storageFunctions.getTodo(index);
+    title.value = todo.getTitle();
+    description.value = todo.getDesc();
+    date.value = todo.getDate();
+  
+}
+
+let getFormValues = (title, description, date, index) => {
+
+    title.placeholder = "Title: Call the bank";
+    description.placeholder = "Description: e.g reason for calling...";    
+}
+
+
+
 export {
     generateAddFormContainer,
     generateEditFormContainer,
     generateDescription,
-    generateForm,
-    generateEditForm,
+    generateForm,  
     createTodoElement,
+    getFormValuesFromTodo,
+    getFormValues
 }

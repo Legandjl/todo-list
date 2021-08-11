@@ -1,12 +1,16 @@
 import {
     divGenerator
-} from "./generators/divGenerator";
+} from "../generators/divGenerator";
 import {
-    titleClick,      
+    titleClick,
 } from "./storage"
 import {
-    addButtonEvent, updateWeek, updateToday, updateHome
+    addButtonEvent,
+    updateWeek,
+    updateToday,
+    updateHome
 } from "./eventHandler";
+import { createTodoElement } from "../generators/elementGenerator";
 
 let locked = false;
 
@@ -18,6 +22,11 @@ let getLocked = () => {
 let lock = () => {
 
     locked = true;
+}
+
+let unlockWindow = () => {
+
+    locked = false;
 }
 
 let appendTodoToDisplay = function (todoElement) {
@@ -49,14 +58,17 @@ let closeWindow = (e) => {
     unlockWindow();
 }
 
-let unlockWindow = () => {
-
-    locked = false;
-}
-
 let getDisplay = () => {
 
     return document.querySelector("#display");
+}
+
+let updateDisplay = (todoList) => {
+
+    todoList.forEach((todo) => {      
+
+        appendTodoToDisplay(createTodoElement(todo));
+    })
 }
 
 let initialLoad = function () {
@@ -110,11 +122,6 @@ let initialLoad = function () {
     document.querySelector("#Week").addEventListener("click", updateWeek);
 }
 
-let updateDisplay = (todoList) => {
-
-
-}
-
 export {
     initialLoad,
     appendTodoToDisplay,
@@ -124,5 +131,6 @@ export {
     clearElement,
     unlockWindow,
     getLocked,
-    lock,    
+    lock,
+    updateDisplay
 }

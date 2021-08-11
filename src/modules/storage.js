@@ -1,22 +1,8 @@
 import {
-    removeFromDisplay,
-    appendTodoToDisplay,
-    unlockWindow,
-} from "./ui"
-import {
-    createTodoElement,
-} from "./generators/elementGenerator";
-import {
-    createTodo,   
-} from "./objectFactory"
-import {
     format,
     isSameWeek,
     parseISO
 } from 'date-fns'
-import {
-    updateHome
-} from "./eventHandler";
 
 let currentSelection = "Home";
 
@@ -30,21 +16,15 @@ let titleClick = function (e) {
     console.log(currentSelection);
     //will update display to the chosen module (ie projects, notes etc)  
 }
-//form event - on submit calls addtodo
-let addTodo = (e) => {
 
-    let todo = createTodo(e.target.elements);
+storageFunctions.addTodo = (todo) => {
+
     todoList.push(todo);
     let id = todoList.indexOf(todo);
     todo.setIdentifier(id);
-    appendTodoToDisplay(createTodoElement(todo));
-    removeFromDisplay(e.target.parentElement.parentElement);
-    unlockWindow();
-    e.preventDefault();
 }
 
-
-storageFunctions.removeTodo = (id) => {    
+storageFunctions.removeTodo = (id) => {
 
     let newTodoList = todoList.filter((element) => {
 
@@ -95,7 +75,6 @@ storageFunctions.getTodoList = () => {
 }
 
 export {
-    titleClick,  
-    addTodo,   
+    titleClick,
     storageFunctions
 }

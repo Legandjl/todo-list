@@ -91,22 +91,6 @@ let createTodo = (elements) => {
 
     return Todo(todoElements[0], todoElements[1], todoDate, todoPriority);
 }
-
-
-const objectGenerator = function () {
-
-    const createToDo = function (title, desc, date, priority) {
-
-        return Todo(title, desc, date, priority);
-    }
-
-    return {
-        createToDo
-    }
-
-}
-
-export {
-    objectGenerator,
+export {    
     createTodo
 }

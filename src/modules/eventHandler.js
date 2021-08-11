@@ -4,33 +4,38 @@ import {
     lock,
     clearDisplay,
     appendTodoToDisplay,
-    unlockWindow
+    unlockWindow,
+    updateDisplay
 } from "./ui"
 import {
     divGenerator
-} from "./generators/divGenerator";
+} from "../generators/divGenerator";
 import {
     createTodoElement,
     generateAddFormContainer,
     generateDescription,
     generateEditForm,
     generateEditFormContainer,
-    generateForm
-} from "./generators/elementGenerator";
+    generateForm,
+    getFormValues,
+    getFormValuesFromTodo
+} from "../generators/elementGenerator";
 import {
-    addTodo, 
     storageFunctions
 } from "./storage";
-import { createTodo } from "./objectFactory";
+import {
+    createTodo
+} from "./objectFactory";
 
+//ui event handlers (buttons etc)
 
-//add form event listeners
+//todo form windows
 
-let addTodoForm = (e) => {
-    console.log(e.target.innerText);
+let addTodoForm = (e) => {  
+
     let container = document.querySelector("#formWrapper");
     removeFromDisplay(document.querySelector("#formWrapper").firstChild)
-    let todoForm = generateForm("todoForm", addTodo);
+    let todoForm = generateForm("todoForm", addNewTodo);
     container.append(todoForm);
 };
 
@@ -43,9 +48,10 @@ let addNoteForm = (e) => {
 
     console.log(e.target.innerText)
 };
-//sets up and displays the add form window
+//end
 let addButtonEvent = () => {
-    if (getLocked == true) {
+
+    if (getLocked() == true) {
 
         return;
     }
@@ -53,24 +59,30 @@ let addButtonEvent = () => {
     lock();
     let formContainer = generateAddFormContainer();
     let formDiv = divGenerator.createDiv("formWrapper");
-    let todoForm = generateForm("todoForm", addTodo);
+    let todoForm = generateForm("todoForm", addNewTodo, getFormValues);
     formDiv.append(todoForm);
     formContainer.append(formDiv);
     document.body.appendChild(formContainer);
 };
-//sets up and displays the edit form window
+
 let editButtonEvent = (e) => {
 
-    let id = e.target.parentElement.parentElement.dataset.id;
-
-    if (getLocked == true) {
+    if (getLocked() == true) {
 
         return;
     }
 
+    let id = e.target.parentElement.parentElement.dataset.id;
     lock();
     let formContainer = generateEditFormContainer();
-    let form = generateEditForm("editTodoForm", editTodoEvent, id);
+    let form = generateForm("editTodoForm", editTodoEvent, getFormValuesFromTodo, id);    
+
+    let identifier = document.createElement("input");
+    identifier.type = "hidden";
+    identifier.value = id;
+    form.append(identifier);
+
+    console.log(form.date + "THis is te form id")
     formContainer.append(form);
     document.body.appendChild(formContainer);
 
@@ -87,31 +99,23 @@ let openDescriptionWindow = (e) => {
     let todoId = e.target.parentElement.parentElement.dataset.id;
     document.querySelector("#content").append(generateDescription(todoId));
 };
-
+/* storage event handlers */
 let updateWeek = () => {
 
     clearDisplay();
 
-    let todoList = storageFunctions.getWeek(); 
+    let todoList = storageFunctions.getWeek();
+    updateDisplay(todoList);
 
-    todoList.forEach((todo) => {
-
-        appendTodoToDisplay(createTodoElement(todo));
-    }) //refactor to ui
-
-}
+};
 
 let updateToday = () => {
 
     clearDisplay();
 
     let todoList = storageFunctions.getToday();
-
-    todoList.forEach((todo) => {
-
-        appendTodoToDisplay(createTodoElement(todo));
-    });
-}//refactor to ui /eventhandler
+    updateDisplay(todoList);
+};
 
 let updateHome = () => {
 
@@ -119,14 +123,15 @@ let updateHome = () => {
 
     let todoList = storageFunctions.getTodoList();
 
-    todoList.forEach((todo) => {
+    updateDisplay(todoList);
+};
 
-        appendTodoToDisplay(createTodoElement(todo));
+let removeTodo = (e) => {  
+    
+    if(getLocked() == true) {
 
-    })
-}
-
-let removeTodo = (e) => {
+        return;
+    }
 
     let id = e.target.parentElement.parentElement.dataset.id;
 
@@ -134,7 +139,7 @@ let removeTodo = (e) => {
 
     removeFromDisplay(e.target.parentElement.parentElement);
 
-}
+};
 
 let editTodoEvent = (e) => {
 
@@ -152,39 +157,25 @@ let editTodoEvent = (e) => {
     let todo = createTodo(e.target.elements)
     let index = id;
     todo.setIdentifier(id);
-    storageFunctions.replaceTodo(index, todo);  
+    storageFunctions.replaceTodo(index, todo);
     updateHome();
     removeFromDisplay(e.target.parentElement);
     unlockWindow();
     e.preventDefault();
-}
+};
 
-/*
-let editnewTodo = (e) => {
+let addNewTodo = (e) => {
 
-    let elements = e.target.elements;  
-   
-    let id;
-
-    for (let x = 0; x < elements.length; x++) {
-
-        if (elements[x].type == "hidden") {            
-
-            id = elements[x].value
-        }
-    }
-
-    let todo = generateTodo(e.target.elements)
-    let index = id;
-    todo.setIdentifier(id);
-    todoList.splice(index, 1, todo);
-    updateHome();
-    removeFromDisplay(e.target.parentElement);
+    let todo = createTodo(e.target.elements);
+    storageFunctions.addTodo(todo);
+    removeFromDisplay(e.target.parentElement.parentElement);
+    appendTodoToDisplay(createTodoElement(todo));
     unlockWindow();
     e.preventDefault();
-}*/
+};
 
-export {    
+
+export {
     addButtonEvent,
     editButtonEvent,
     openDescriptionWindow,
@@ -195,5 +186,6 @@ export {
     updateToday,
     updateHome,
     removeTodo,
-    editTodoEvent
+    editTodoEvent,
+    addNewTodo
 }
