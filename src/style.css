@@ -191,7 +191,7 @@ body {
 
     display: grid;
     grid-row: 1;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr;    
     grid-gap: 10px;
     padding: 20px;
 }
@@ -601,11 +601,13 @@ input[type="text"] {
 }
 
 #projectWrap {
-
-    max-height: 60px;
+  
     overflow-y: scroll;
- 
+}
 
+#projectWrap:hover {
+
+    cursor: pointer;
 }
 #projectWrap::-webkit-scrollbar {
     display: none;

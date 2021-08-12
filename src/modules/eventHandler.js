@@ -123,6 +123,8 @@ let addNewProject = (e) => {
 
     storageFunctions.addProject(e.target.elements[0].value);
     updateProjects();
+    removeFromDisplay(e.target.parentElement.parentElement);
+    unlockWindow();
     e.preventDefault();
 }
 
