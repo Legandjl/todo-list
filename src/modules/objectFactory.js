@@ -2,6 +2,17 @@ const Todo = function (title, desc, date, priority) {
 
     let identifier;
     let completed = false;
+    let project = "";
+
+    let getProject = () => {
+
+        return project;
+    }
+
+    let setProject = (projectName) => {
+
+        project = projectName;
+    }
 
     let getTitle = () => {
 
@@ -59,7 +70,9 @@ const Todo = function (title, desc, date, priority) {
         getIdentifier,
         setIdentifier,
         setCompleted,
-        getCompleted
+        getCompleted, 
+        setProject,
+        getProject
     }
 }
 
@@ -91,6 +104,7 @@ let createTodo = (elements) => {
 
     return Todo(todoElements[0], todoElements[1], todoDate, todoPriority);
 }
+
 export {    
     createTodo
 }

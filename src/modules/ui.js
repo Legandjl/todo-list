@@ -2,9 +2,6 @@ import {
     divGenerator
 } from "../generators/divGenerator";
 import {
-    titleClick,
-} from "./storage"
-import {
     addButtonEvent,
     updateWeek,
     updateToday,
@@ -13,6 +10,7 @@ import {
 import { createTodoElement } from "../generators/elementGenerator";
 
 let locked = false;
+let currentTab;
 
 let getLocked = () => {
 
@@ -71,9 +69,31 @@ let updateDisplay = (todoList) => {
     })
 }
 
+let getProjectContainer = () => {
+
+    return document.querySelector("#projectWrap");
+}
+
+let titleClick = function (e) {
+
+    currentTab = e.target.innerText;
+    console.log(currentTab);
+    //will update display to the chosen module (ie projects, notes etc)  
+}
+
+let getCurrentTab = () => {
+
+    return currentTab;
+}
+
+let setCurrentTab = (text) => {
+
+    currentTab = text;
+}
+
 let initialLoad = function () {
 
-    const sideBarTitles = ["Home", "Today", "Week", "Projects", "Notes"];
+    const sideBarTitles = ["Home", "Today", "Week", "Projects", "projectWrap", "Notes"];
     let header = divGenerator.createDiv("header");
     header.innerText = "TO-DO APPLICATION"
 
@@ -105,21 +125,28 @@ let initialLoad = function () {
 
     sideBarTitles.forEach((title) => {
 
+        if(title == "projectWrap") {
+
+            sideContainer.append(divGenerator.createDiv("projectWrap"));
+            return;
+        }
+
         let currentTitle = divGenerator.createDivWithClass("sideBarTitle");
-        currentTitle.id = title;
+        currentTitle.id = title.toLowerCase();
         currentTitle.innerText = title;
         currentTitle.classList.add("sidebarTitle");
         sideContainer.appendChild(currentTitle);
-        currentTitle.addEventListener("click", titleClick);
+        currentTitle.addEventListener("click", titleClick);   
+     
     })
 
     addNewButton.addEventListener("click", addButtonEvent);
 
-    document.querySelector("#Home").addEventListener("click", updateHome);
+    document.querySelector("#home").addEventListener("click", updateHome);
 
-    document.querySelector("#Today").addEventListener("click", updateToday);
+    document.querySelector("#today").addEventListener("click", updateToday);
 
-    document.querySelector("#Week").addEventListener("click", updateWeek);
+    document.querySelector("#week").addEventListener("click", updateWeek);
 }
 
 export {
@@ -132,5 +159,8 @@ export {
     unlockWindow,
     getLocked,
     lock,
-    updateDisplay
+    updateDisplay,
+    getProjectContainer,
+    getCurrentTab,
+    setCurrentTab
 }

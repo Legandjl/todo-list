@@ -4,17 +4,38 @@ import {
     parseISO
 } from 'date-fns'
 
-let currentSelection = "Home";
 
 let todoList = []; //store all todos here, then arr filter them to day/week/projects
+let projectList = [];
 
 let storageFunctions = {}
 
-let titleClick = function (e) {
+storageFunctions.getProjects = () => {
 
-    currentSelection = e.target.innerText;
-    console.log(currentSelection);
-    //will update display to the chosen module (ie projects, notes etc)  
+    return projectList;
+}
+
+storageFunctions.addProject = (projectTitle) => {
+
+    let match = true;
+
+    projectList.forEach((project) => {
+
+        if (project.toLowerCase() == projectTitle.toLowerCase()) {
+
+            match = false;
+        }
+    })
+
+    if (match == true) {
+
+        projectList.push(projectTitle);
+    }
+
+    projectList.forEach((project) => {
+
+        console.log(project);
+    })
 }
 
 storageFunctions.addTodo = (todo) => {
@@ -43,7 +64,7 @@ storageFunctions.getTodo = (id) => {
 
     return newTodo[0];
 }
-
+//replaces a todo at index with passed todo
 storageFunctions.replaceTodo = (index, todo) => {
 
     todoList.splice(index, 1, todo);
@@ -68,13 +89,39 @@ storageFunctions.getWeek = () => {
 
     return thisWeekTodos;
 }
+//filters todos by project
+storageFunctions.filterByProject = (project) => {
+
+    let filteredByProject = todoList.filter((todo) => {
+
+        return todo.getProject().toLowerCase() == project.toLowerCase();
+    })
+
+    return filteredByProject;
+}
 //returns all todos
 storageFunctions.getTodoList = () => {
 
     return todoList;
 }
+//checks if a currently selected title is a project
+storageFunctions.isProject = (name) => {
+
+    let projectSelected = false;
+
+    projectList.forEach((project) => {
+
+        if (project.toLowerCase() == name.toLowerCase()) {
+
+            projectSelected = true;
+        }
+    })
+
+    return projectSelected;
+
+}
 
 export {
-    titleClick,
+
     storageFunctions
 }

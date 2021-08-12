@@ -6,7 +6,9 @@ implement projects
 
 refactor forms
 
-need to set checkbox according to check status in edit form
+need to set radio according to prio status in edit form
+
+refactor check for poroject with data id on each project title
 
 
 

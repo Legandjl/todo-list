@@ -12,6 +12,7 @@ import {
     storageFunctions
 } from "../modules/storage"
 import {
+    addNewProject,
     addNoteForm,
     addProjectForm,
     addTodoForm,
@@ -19,7 +20,9 @@ import {
     openDescriptionWindow,
     removeTodo
 } from "../modules/eventHandler"
-import { formHelpers } from "./formHelpers"
+import {
+    formHelpers
+} from "./formHelpers"
 
 //generates a container using id paramaters so it can be used in diff css styles
 let generateFormContainer = (containerId, headerId, headerTitle, headerText) => {
@@ -55,7 +58,7 @@ let generateAddFormContainer = () => {
 
         let titleHolder = divGenerator.createDivWithClass("addSidebarTitle");
         titleHolder.innerText = title;
-        titleHolder.addEventListener("click", projectHandlers[title]);
+        titleHolder.addEventListener("click", projectHandlers[title]);        
         formSidebar.append(titleHolder);
     })
 
@@ -69,7 +72,7 @@ let generateEditFormContainer = () => {
     return formContainer;
 }
 //formvaluecallback is either getvaluefromtodo or getformvalues, which assign to values or placeholder respectively
-let generateForm = (formId, callback, formValueCallback, indexNum) => { 
+let generateForm = (formId, callback, formValueCallback, indexNum) => {
 
     let form = document.createElement("FORM");
     form.id = formId;
@@ -81,7 +84,7 @@ let generateForm = (formId, callback, formValueCallback, indexNum) => {
     title.setAttribute("required", "");
 
     let desc = document.createElement("textarea");
- 
+
     desc.classList.add("desc");
     desc.setAttribute("required", "");
 
@@ -90,15 +93,13 @@ let generateForm = (formId, callback, formValueCallback, indexNum) => {
     date.classList.add("formDate");
     date.setAttribute("required", "");
 
-    formValueCallback(title, desc, date, indexNum)
-
     //priority
 
     let radioWrap = divGenerator.createDivWithClass("radioWrap");
     let highPrio = formHelpers.generateRadio("High", "priority", "highPrio");
     let highPrioLabel = formHelpers.generateRadioLabel(highPrio);
     let lowPrio = formHelpers.generateRadio("Low", "priority", "lowPrio");
-    lowPrio.checked = true;
+
     let lowPrioLabel = formHelpers.generateRadioLabel(lowPrio);
 
     let radioElements = [lowPrioLabel, lowPrio, highPrioLabel, highPrio];
@@ -116,7 +117,7 @@ let generateForm = (formId, callback, formValueCallback, indexNum) => {
     priorityWrap.append(radioWrap);
 
     let submitButton = document.createElement("input")
-    submitButton.value = "Add";
+    submitButton.value;
     submitButton.setAttribute("type", "submit");
     submitButton.id = "todoSubmit";
 
@@ -134,6 +135,18 @@ let generateForm = (formId, callback, formValueCallback, indexNum) => {
 
         form.append(item);
     })
+
+    let inputs = {
+        "title": title,
+        "desc": desc,
+        "date":date,
+        "submitButton":submitButton,
+        "lowPrio":lowPrio,
+        "highPrio":highPrio,
+        "indexNum":indexNum
+    }
+
+    formValueCallback(inputs);
 
     form.addEventListener("submit", callback);
 
@@ -244,12 +257,34 @@ let generateDescription = (todoId) => {
 
 }
 //helpers for creating radio items for the forms
+let generateProjectForm = () => {
 
+    let form = document.createElement("FORM");
+    form.id = "projectForm";
+
+    let title = document.createElement("input");
+    title.type = "text";
+    title.placeholder = "Project title..."
+
+    let submitButton = document.createElement("input")
+    submitButton.value;
+    submitButton.setAttribute("type", "submit");
+    submitButton.id = "projectSubmit";
+
+    form.append(title);
+    form.append(submitButton);
+
+    form.addEventListener("submit", addNewProject)
+
+    return form;
+    
+}
 
 export {
     generateAddFormContainer,
     generateEditFormContainer,
     generateDescription,
-    generateForm,  
-    createTodoElement,   
+    generateForm,
+    createTodoElement,
+    generateProjectForm
 }

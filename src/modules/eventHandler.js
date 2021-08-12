@@ -5,7 +5,11 @@ import {
     clearDisplay,
     appendTodoToDisplay,
     unlockWindow,
-    updateDisplay
+    updateDisplay,
+    clearElement,
+    setProjectTab,
+    getCurrentTab,
+    setCurrentTab
 } from "./ui"
 import {
     divGenerator
@@ -15,7 +19,8 @@ import {
     generateAddFormContainer,
     generateDescription,
     generateEditFormContainer,
-    generateForm,  
+    generateForm,
+    generateProjectForm,
 } from "../generators/elementGenerator";
 import {
     storageFunctions
@@ -23,30 +28,30 @@ import {
 import {
     createTodo
 } from "./objectFactory";
-import { formHelpers } from "../generators/formHelpers";
-
-//ui event handlers (buttons etc)
+import {
+    formHelpers
+} from "../generators/formHelpers";
 
 //todo form windows
 
-let addTodoForm = (e) => {  
+let addTodoForm = (e) => {
 
     let container = document.querySelector("#formWrapper");
     removeFromDisplay(document.querySelector("#formWrapper").firstChild)
-    let todoForm = generateForm("todoForm", addNewTodo);
+    let todoForm = generateForm("todoForm", addNewTodo, formHelpers.getFormValues);
     container.append(todoForm);
 };
 
 let addProjectForm = (e) => {
 
-    console.log(e.target.innerText)
+    let container = document.querySelector("#formWrapper");
+    removeFromDisplay(document.querySelector("#formWrapper").firstChild)
+    let projectForm = generateProjectForm();
+    container.append(projectForm);
 };
 
-let addNoteForm = (e) => {
+/* ui button events */
 
-    console.log(e.target.innerText)
-};
-//end
 let addButtonEvent = () => {
 
     if (getLocked() == true) {
@@ -73,7 +78,7 @@ let editButtonEvent = (e) => {
     let id = e.target.parentElement.parentElement.dataset.id;
     lock();
     let formContainer = generateEditFormContainer();
-    let form = generateForm("editTodoForm", editTodoEvent, formHelpers.getFormValuesFromTodo, id);    
+    let form = generateForm("editTodoForm", editTodoEvent, formHelpers.getFormValuesFromTodo, id);
 
     let identifier = document.createElement("input");
     identifier.type = "hidden";
@@ -97,7 +102,77 @@ let openDescriptionWindow = (e) => {
     let todoId = e.target.parentElement.parentElement.dataset.id;
     document.querySelector("#content").append(generateDescription(todoId));
 };
-/* storage event handlers */
+
+let removeTodo = (e) => {
+
+    if (getLocked() == true) {
+
+        return;
+    }
+
+    let id = e.target.parentElement.parentElement.dataset.id;
+
+    storageFunctions.removeTodo(id);
+
+    removeFromDisplay(e.target.parentElement.parentElement);
+
+};
+/* form events */
+
+let addNewProject = (e) => {
+
+    storageFunctions.addProject(e.target.elements[0].value);
+    updateProjects();
+    e.preventDefault();
+}
+
+let addNoteForm = (e) => {
+
+    console.log(e.target.innerText)
+};
+
+let editTodoEvent = (e) => {
+
+    let elements = e.target.elements;
+    let id;
+
+    for (let x = 0; x < elements.length; x++) {
+
+        if (elements[x].type == "hidden") {
+
+            id = elements[x].value
+        }
+    }
+
+    let todo = createTodo(e.target.elements)  
+    let project = storageFunctions.getTodo(id).getProject();
+    todo.setIdentifier(id);
+    todo.setProject(project);
+    storageFunctions.replaceTodo(id, todo);
+    updateHome();
+    removeFromDisplay(e.target.parentElement);
+    unlockWindow();
+    e.preventDefault();
+};
+
+let addNewTodo = (e) => {
+
+    let todo = createTodo(e.target.elements);   
+
+    if (storageFunctions.isProject(getCurrentTab())) {
+
+        todo.setProject(getCurrentTab());       
+    }
+
+    storageFunctions.addTodo(todo);
+    removeFromDisplay(e.target.parentElement.parentElement);
+    appendTodoToDisplay(createTodoElement(todo));
+    unlockWindow();
+    e.preventDefault();
+};
+
+/*filter events - ui title clicks */
+
 let updateWeek = () => {
 
     clearDisplay();
@@ -124,53 +199,30 @@ let updateHome = () => {
     updateDisplay(todoList);
 };
 
-let removeTodo = (e) => {  
-    
-    if(getLocked() == true) {
+let projectUpdate = (e) => {
 
-        return;
-    }
+    setCurrentTab(e.target.innerText)
+    clearDisplay();
+    let todoList = storageFunctions.filterByProject(e.target.innerText);
+    updateDisplay(todoList);
 
-    let id = e.target.parentElement.parentElement.dataset.id;
+}
 
-    storageFunctions.removeTodo(id);
+/*project events */
 
-    removeFromDisplay(e.target.parentElement.parentElement);
+let updateProjects = () => {
 
-};
+    let projectWrap = document.querySelector("#projectWrap");
+    clearElement(projectWrap);
+    let projectList = storageFunctions.getProjects();
+    projectList.forEach((project) => {
 
-let editTodoEvent = (e) => {
-
-    let elements = e.target.elements;
-    let id;
-
-    for (let x = 0; x < elements.length; x++) {
-
-        if (elements[x].type == "hidden") {
-
-            id = elements[x].value
-        }
-    }
-
-    let todo = createTodo(e.target.elements)
-    let index = id;
-    todo.setIdentifier(id);
-    storageFunctions.replaceTodo(index, todo);
-    updateHome();
-    removeFromDisplay(e.target.parentElement);
-    unlockWindow();
-    e.preventDefault();
-};
-
-let addNewTodo = (e) => {
-
-    let todo = createTodo(e.target.elements);
-    storageFunctions.addTodo(todo);
-    removeFromDisplay(e.target.parentElement.parentElement);
-    appendTodoToDisplay(createTodoElement(todo));
-    unlockWindow();
-    e.preventDefault();
-};
+        let projectTitle = divGenerator.createDivWithClass("projectTitle");
+        projectTitle.innerText = project;
+        projectTitle.addEventListener("click", projectUpdate);
+        projectWrap.append(projectTitle);
+    })
+}
 
 
 export {
@@ -185,5 +237,6 @@ export {
     updateHome,
     removeTodo,
     editTodoEvent,
-    addNewTodo
+    addNewTodo,
+    addNewProject
 }
