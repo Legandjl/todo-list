@@ -2,12 +2,6 @@ overflow needs to be hidden in details window
 
 add counter of uncompleted todos - display in menu next to title (ie today : 3)
 
-implement projects
-
-refactor forms
-
-need to set radio according to prio status in edit form
-
 refactor check for poroject with data id on each project title
 
 

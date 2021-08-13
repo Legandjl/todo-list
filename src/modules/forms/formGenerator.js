@@ -90,7 +90,6 @@ let generateForm = (formId, callback, formValueCallback, indexNum) => {
     return form;
 }
 //takes a todo id and generates a decription from it for dom display
-
 let generateProjectForm = () => {
 
     let form = document.createElement("FORM");

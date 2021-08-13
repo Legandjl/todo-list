@@ -7,8 +7,9 @@ import {
     updateToday,
     updateHome
 } from "../app/eventHandler";
-import {createTodoElement} from "../app/todo";
-
+import {
+    createTodoElement
+} from "../app/todo";
 let locked = false;
 let currentTab;
 
@@ -63,7 +64,7 @@ let getDisplay = () => {
 
 let updateDisplay = (todoList) => {
 
-    todoList.forEach((todo) => {      
+    todoList.forEach((todo) => {
 
         appendTodoToDisplay(createTodoElement(todo));
     })
@@ -89,6 +90,11 @@ let getCurrentTab = () => {
 let setCurrentTab = (text) => {
 
     currentTab = text;
+}
+
+let showProjects = () => {
+
+    document.querySelector("#projectWrap").classList.toggle("projectWrapShow");
 }
 
 let initialLoad = function () {
@@ -125,7 +131,7 @@ let initialLoad = function () {
 
     sideBarTitles.forEach((title) => {
 
-        if(title == "projectWrap") {
+        if (title == "projectWrap") {
 
             sideContainer.append(divGenerator.createDiv("projectWrap"));
             return;
@@ -136,8 +142,8 @@ let initialLoad = function () {
         currentTitle.innerText = title;
         currentTitle.classList.add("sidebarTitle");
         sideContainer.appendChild(currentTitle);
-        currentTitle.addEventListener("click", titleClick);   
-     
+        currentTitle.addEventListener("click", titleClick);
+
     })
 
     addNewButton.addEventListener("click", addButtonEvent);
@@ -147,6 +153,8 @@ let initialLoad = function () {
     document.querySelector("#today").addEventListener("click", updateToday);
 
     document.querySelector("#week").addEventListener("click", updateWeek);
+
+    document.querySelector("#projects").addEventListener("click", showProjects);
 }
 
 export {

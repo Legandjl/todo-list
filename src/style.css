@@ -191,7 +191,7 @@ body {
 
     display: grid;
     grid-row: 1;
-    grid-template-columns: 1fr;    
+    grid-template-columns: 1fr;
     grid-gap: 10px;
     padding: 20px;
 }
@@ -562,17 +562,14 @@ body {
     resize: none;
 }
 
-.sideBarTitle {
-
-
-}
+.sideBarTitle {}
 
 .sideBarTitle:hover {
 
     scale: 1.1;
     cursor: pointer;
     text-decoration: underline;
-    
+
 }
 
 #content,
@@ -601,50 +598,57 @@ input[type="text"] {
 }
 
 #projectWrap {
-  
+
     overflow-y: scroll;
-    display: grid;
+    display: none;
     grid-template-columns: 1fr;
     grid-gap: 10px;
     padding-left: 10px;
+
+}
+
+.projectWrapShow {
+
+    display: grid !important;
 }
 
 #projectWrap:hover {
 
     cursor: pointer;
 }
+
 #projectWrap::-webkit-scrollbar {
     display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  #projectWrap {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+}
 
-  #projectForm {
+/* Hide scrollbar for IE, Edge and Firefox */
+#projectWrap {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
 
+#projectForm {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr auto;
-    padding:20px;
+    padding: 20px;
     grid-gap: 20px;
-   
-  }
+}
 
-  #projectForm input[type = "submit"] {
-      width: 120px;
-      justify-self: end;
-      height:30px;
-  }
+#projectForm input[type="submit"] {
+    width: 120px;
+    justify-self: end;
+    height: 30px;
+}
 
-  #projectForm input[type = "text"] {
+#projectForm input[type="text"] {
 
-    border:none;
-    outline:none;
+    border: none;
+    outline: none;
     align-self: flex-start;
-  }
+}
 
 input:focus::placeholder,
 textarea:focus::placeholder {

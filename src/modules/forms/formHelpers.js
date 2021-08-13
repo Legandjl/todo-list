@@ -60,12 +60,8 @@ formHelpers.getFormPlaceholders = (inputs) => {
     lowPrio.checked = true;
     submitButton.value = "Add";
 }
-
-
 //generates a form container with no sidebar as not required, this form is only for editing a specific todo, uses generate form container as base
-formHelpers.generateEditFormContainer = () => {
-
-  
+formHelpers.generateEditFormContainer = () => {  
     let formContainer = windowGen.generateFormContainer("editFormContainer", "editFormHeader", "editFormTitle", "Edit")
     return formContainer;
 }
