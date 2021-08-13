@@ -9,25 +9,25 @@ import {
     clearElement,  
     getCurrentTab,
     setCurrentTab
-} from "../userInterface/ui"
+} from "./userInterface/ui"
 import {
     divGenerator
-} from "../misc/divGenerator";
+} from "./misc/divGenerator";
 import { 
     generateForm,
     generateProjectForm,
-} from "../forms/formGenerator";
+} from "./forms/formGenerator";
 import {
     storageFunctions
 } from "./storage";
 import {
     createTodo,
     createTodoElement
-} from "../logic/todo";
+} from "./app/todo";
 import {
     formHelpers
-} from "../forms/formHelpers";
-import { windowGen } from "../userInterface/windows";
+} from "./forms/formHelpers";
+import { windowGen } from "./userInterface/windows";
 
 //todo form windows
 

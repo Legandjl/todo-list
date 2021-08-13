@@ -6,8 +6,8 @@ import {
     updateWeek,
     updateToday,
     updateHome
-} from "../logic/eventHandler";
-import {createTodoElement} from "../logic/todo";
+} from "../app/eventHandler";
+import {createTodoElement} from "../app/todo";
 
 let locked = false;
 let currentTab;

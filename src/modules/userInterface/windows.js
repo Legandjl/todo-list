@@ -1,5 +1,5 @@
-import { addNoteForm, addProjectForm, addTodoForm } from "../logic/eventHandler";
-import { storageFunctions } from "../logic/storage";
+import { addNoteForm, addProjectForm, addTodoForm } from "../app/eventHandler";
+import { storageFunctions } from "../app/storage";
 import { closeWindow } from "./ui";
 import { divGenerator } from "../misc/divGenerator";
 import close from ".././images/close.png"

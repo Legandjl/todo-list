@@ -1,5 +1,5 @@
 
-import { storageFunctions } from "../logic/storage";
+import { storageFunctions } from "../app/storage";
 import { windowGen } from "../userInterface/windows";
 
 let formHelpers = {};
@@ -31,9 +31,7 @@ formHelpers.getFormValuesFromTodo = (inputs) => {
     let submitButton = inputs["submitButton"];
     let index = inputs["indexNum"];
     let date = inputs["date"];
-    let highPrio = inputs["highPrio"];
-
-    
+    let highPrio = inputs["highPrio"];   
 
     let todo = storageFunctions.getTodo(index);
     title.value = todo.getTitle();

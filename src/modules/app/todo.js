@@ -3,7 +3,6 @@ import {
 } from "../misc/divGenerator";
 import bin from ".././images/bin.png";
 import edit from ".././images/edit.png";
-
 import {
     clearElement
 } from "../userInterface/ui";

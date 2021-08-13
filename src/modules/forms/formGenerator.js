@@ -3,7 +3,7 @@ import {
 } from "../misc/divGenerator"
 import {
     addNewProject
-} from "../logic/eventHandler"
+} from "../app/eventHandler"
 import {
     formHelpers
 } from "./formHelpers"
