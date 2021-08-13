@@ -23,7 +23,7 @@ import {
 import {
     createTodo,
     createTodoElement
-} from "../logic/todo";
+} from "./todo";
 import {
     formHelpers
 } from "../forms/formHelpers";

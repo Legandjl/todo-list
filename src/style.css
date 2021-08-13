@@ -603,6 +603,10 @@ input[type="text"] {
 #projectWrap {
   
     overflow-y: scroll;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    padding-left: 10px;
 }
 
 #projectWrap:hover {

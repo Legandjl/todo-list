@@ -1,4 +1,4 @@
 import "./style.css"
-import {initialLoad} from "./modules/ui"
+import {initialLoad} from "./userInterface/ui"
 initialLoad();
 

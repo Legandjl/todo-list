@@ -1,13 +1,13 @@
 import {
     divGenerator
-} from "../generators/divGenerator";
+} from "../misc/divGenerator";
 import {
     addButtonEvent,
     updateWeek,
     updateToday,
     updateHome
-} from "./eventHandler";
-import { createTodoElement } from "../generators/elementGenerator";
+} from "../logic/eventHandler";
+import {createTodoElement} from "../logic/todo";
 
 let locked = false;
 let currentTab;

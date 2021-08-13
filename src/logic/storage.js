@@ -4,10 +4,8 @@ import {
     parseISO
 } from 'date-fns'
 
-
 let todoList = []; //store all todos here, then arr filter them to day/week/projects
 let projectList = [];
-
 let storageFunctions = {}
 
 storageFunctions.getProjects = () => {

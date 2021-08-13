@@ -1,6 +1,6 @@
-import {
-    storageFunctions
-} from "../modules/storage";
+
+import { storageFunctions } from "../logic/storage";
+import { windowGen } from "../userInterface/windows";
 
 let formHelpers = {};
 
@@ -33,13 +33,15 @@ formHelpers.getFormValuesFromTodo = (inputs) => {
     let date = inputs["date"];
     let highPrio = inputs["highPrio"];
 
+    
+
     let todo = storageFunctions.getTodo(index);
     title.value = todo.getTitle();
     description.value = todo.getDesc();
     date.value = todo.getDate();
     submitButton.value = "Edit";
 
-    if(todo.getPriority() == "Low") {
+    if (todo.getPriority() == "Low") {
 
         lowPrio.checked = true;
         return;
@@ -48,7 +50,7 @@ formHelpers.getFormValuesFromTodo = (inputs) => {
     highPrio.checked = true;
 }
 
-formHelpers.getFormValues = (inputs) => {
+formHelpers.getFormPlaceholders = (inputs) => {
 
     let title = inputs["title"];
     let description = inputs["desc"];
@@ -58,7 +60,16 @@ formHelpers.getFormValues = (inputs) => {
     title.placeholder = "Title: Call the bank";
     description.placeholder = "Description: e.g reason for calling...";
     lowPrio.checked = true;
-    submitButton.value = "Add"; 
+    submitButton.value = "Add";
+}
+
+
+//generates a form container with no sidebar as not required, this form is only for editing a specific todo, uses generate form container as base
+formHelpers.generateEditFormContainer = () => {
+
+  
+    let formContainer = windowGen.generateFormContainer("editFormContainer", "editFormHeader", "editFormTitle", "Edit")
+    return formContainer;
 }
 
 export {
