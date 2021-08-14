@@ -5,8 +5,7 @@ import {
     addButtonEvent,
     updateWeek,
     updateToday,
-    updateHome,
-    
+    updateHome    
 } from "../app/eventHandler";
 import {  
     createTodoElement
@@ -140,8 +139,8 @@ let initialLoad = function () {
 
         let currentTitle = divGenerator.createDivWithClass("sideBarTitle");
         currentTitle.id = title.toLowerCase();
-        currentTitle.innerText = title;
-        currentTitle.classList.add("sidebarTitle");
+        currentTitle.innerText = title;    
+     
         sideContainer.appendChild(currentTitle);
         currentTitle.addEventListener("click", titleClick);
 

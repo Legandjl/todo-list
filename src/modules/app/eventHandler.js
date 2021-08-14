@@ -122,7 +122,9 @@ let removeProject = (e) => {
     console.log(e.target.parentElement.innerText);
     storageFunctions.removeProject(e.target.parentElement.innerText);
     e.target.parentElement.remove();
+    setCurrentTab(document.querySelector("#home"));
     updateHome();
+   
     
 }
 /* form submit events */

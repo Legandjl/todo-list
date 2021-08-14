@@ -102,7 +102,7 @@ let generateProjectForm = () => {
     title.maxLength = 15;
 
     let submitButton = document.createElement("input")
-    submitButton.value;
+    submitButton.value = "Add Project"
     submitButton.setAttribute("type", "submit");
     submitButton.id = "projectSubmit";
 

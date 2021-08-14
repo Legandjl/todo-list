@@ -343,11 +343,9 @@ body {
 
 #todoForm {
 
-
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: repeat(4, 1fr);
-
     padding: 10px;
     grid-gap: 10px;
     justify-items: center;
@@ -694,4 +692,11 @@ textarea:focus {
     margin-left: 20px;
     justify-self: center;
 
+}
+
+#projects:hover {
+
+    cursor:default;
+    scale:initial;
+    text-decoration: initial;
 }
