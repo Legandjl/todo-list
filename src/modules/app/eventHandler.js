@@ -8,15 +8,13 @@ import {
     updateDisplay,
     clearElement,
     getCurrentTab,
-    setCurrentTab,
-    updateNoteDisplay
+    setCurrentTab    
 } from "../userInterface/ui"
 import {
     divGenerator
 } from "../misc/divGenerator";
 import {
-    generateForm,
-    generateNoteForm,
+    generateForm,  
     generateProjectForm,
 } from "../forms/formGenerator";
 import {
@@ -50,20 +48,6 @@ let addProjectForm = (e) => {
     let projectForm = generateProjectForm();
     container.append(projectForm);
 };
-
-let addNoteForm = (e) => {
-
-    let container= document.querySelector("#formWrapper");
-    removeFromDisplay(document.querySelector("#formWrapper").firstChild);
-    let noteForm = generateNoteForm();
-    container.append(noteForm);
-
-    console.log(e.target);
-
-
-
-};
-
 /* ui button events */
 
 //opens the add new window and displays an add new todo form
@@ -246,13 +230,12 @@ export {
     openDescriptionWindow,
     addTodoForm,
     addProjectForm,
-  
     updateWeek,
     updateToday,
     updateHome,
     removeTodo,
     editTodoEvent,
     addNewTodo,
-    addNewProject,
-  
+    addNewProject
+
 }

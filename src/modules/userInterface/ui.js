@@ -73,7 +73,6 @@ let updateDisplay = (todoList) => {
     })
 }
 
-
 let getProjectContainer = () => {
 
     return document.querySelector("#projectWrap");
@@ -102,14 +101,7 @@ let setCurrentTab = (element) => {
     element.classList.add("activeTab");
 }
 
-let showProjects = () => {
 
-    if(document.querySelector("#projectWrap").hasChildNodes()) {
-
-    document.querySelector("#projectWrap").classList.toggle("projectWrapShow");
-
-    }
-}
 
 let initialLoad = function () {
 
@@ -170,7 +162,6 @@ let initialLoad = function () {
 
     document.querySelector("#week").addEventListener("click", updateWeek);
 
-    document.querySelector("#projects").addEventListener("click", showProjects);
 }
 
 export {
@@ -186,6 +177,5 @@ export {
     updateDisplay,
     getProjectContainer,
     getCurrentTab,
-    setCurrentTab,
-    
+    setCurrentTab    
 }
