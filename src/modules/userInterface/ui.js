@@ -10,6 +10,7 @@ import {
 import {  
     createTodoElement
 } from "../app/todo";
+import { checkForLocal } from "../app/storage";
 
 let locked = false;
 let currentTab;
@@ -50,7 +51,7 @@ let clearElement = (element) => {
         element.removeChild(element.firstChild);
     }
 }
-
+//closes open window
 let closeWindow = (e) => {
 
     let element = e.target.parentElement.parentElement;
@@ -62,7 +63,7 @@ let getDisplay = () => {
 
     return document.querySelector("#display");
 }
-
+//appends all todos in todolist to the display
 let updateDisplay = (todoList) => {
 
     todoList.forEach((todo) => {
@@ -80,8 +81,7 @@ let titleClick = function (e) {
 
     if(e.target.innerText != "Projects") {
     setCurrentTab(e.target);  
-    }
-    //will update display to the chosen module (ie projects, notes etc)  
+    }    
 }
 
 let getCurrentTab = () => {
@@ -90,6 +90,11 @@ let getCurrentTab = () => {
 }
 
 let setCurrentTab = (element) => {
+
+    if(getLocked() == true) {
+
+        return;
+    }
 
     currentTab.classList.remove("activeTab");   
 
@@ -156,6 +161,8 @@ let initialLoad = function () {
     document.querySelector("#today").addEventListener("click", updateToday);
 
     document.querySelector("#week").addEventListener("click", updateWeek);
+
+   
 
 }
 

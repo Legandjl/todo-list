@@ -8,6 +8,8 @@ let todoList = []; //store all todos here, then arr filter them to day/week/proj
 let projectList = [];
 let storageFunctions = {}
 
+
+
 storageFunctions.getProjects = () => {
 
     return projectList;
@@ -45,9 +47,7 @@ storageFunctions.addProject = (projectTitle) => {
     if (match == true) {
 
         projectList.push(projectTitle);
-    }
-
-   
+    }   
 }
 
 storageFunctions.addTodo = (todo) => {
@@ -132,6 +132,8 @@ storageFunctions.isProject = (element) => {
     return projectSelected;
 
 }
+
+
 
 export {
 
