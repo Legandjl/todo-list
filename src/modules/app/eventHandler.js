@@ -6,15 +6,17 @@ import {
     appendTodoToDisplay,
     unlockWindow,
     updateDisplay,
-    clearElement,  
+    clearElement,
     getCurrentTab,
-    setCurrentTab
+    setCurrentTab,
+    updateNoteDisplay
 } from "../userInterface/ui"
 import {
     divGenerator
 } from "../misc/divGenerator";
-import { 
+import {
     generateForm,
+    generateNoteForm,
     generateProjectForm,
 } from "../forms/formGenerator";
 import {
@@ -27,7 +29,9 @@ import {
 import {
     formHelpers
 } from "../forms/formHelpers";
-import { windowGen } from "../userInterface/windows";
+import {
+    windowGen
+} from "../userInterface/windows";
 
 //todo form windows
 
@@ -46,6 +50,20 @@ let addProjectForm = (e) => {
     let projectForm = generateProjectForm();
     container.append(projectForm);
 };
+
+let addNoteForm = (e) => {
+
+    let container= document.querySelector("#formWrapper");
+    removeFromDisplay(document.querySelector("#formWrapper").firstChild);
+    let noteForm = generateNoteForm();
+    container.append(noteForm);
+
+    console.log(e.target);
+
+
+
+};
+
 /* ui button events */
 
 //opens the add new window and displays an add new todo form
@@ -56,8 +74,8 @@ let addButtonEvent = () => {
         return;
     }
 
-    lock();    
- 
+    lock();
+
     let formContainer = windowGen.generateAddFormContainer();
     let formDiv = divGenerator.createDiv("formWrapper");
     let todoForm = generateForm("todoForm", addNewTodo, formHelpers.getFormPlaceholders);
@@ -77,13 +95,10 @@ let editButtonEvent = (e) => {
     lock();
     let formContainer = windowGen.generateEditFormContainer();
     let form = generateForm("editTodoForm", editTodoEvent, formHelpers.getFormValuesFromTodo, id);
-
     let identifier = document.createElement("input");
     identifier.type = "hidden";
     identifier.value = id;
     form.append(identifier);
-
-    console.log(form.date + "THis is te form id")
     formContainer.append(form);
     document.body.appendChild(formContainer);
 
@@ -99,8 +114,8 @@ let openDescriptionWindow = (e) => {
 
     let todoId = e.target.parentElement.parentElement.dataset.id;
     document.querySelector("#content").append(windowGen.generateDescription(todoId));
-    
-    
+
+
 };
 
 let removeTodo = (e) => {
@@ -128,10 +143,6 @@ let addNewProject = (e) => {
     e.preventDefault();
 }
 
-let addNoteForm = (e) => {
-
-    console.log(e.target.innerText)
-};
 
 let editTodoEvent = (e) => {
 
@@ -146,7 +157,7 @@ let editTodoEvent = (e) => {
         }
     }
 
-    let todo = createTodo(e.target.elements)  
+    let todo = createTodo(e.target.elements)
     let project = storageFunctions.getTodo(id).getProject();
     todo.setIdentifier(id);
     todo.setProject(project);
@@ -160,11 +171,11 @@ let editTodoEvent = (e) => {
 //creates a todo element from form input and appends it to the display
 let addNewTodo = (e) => {
 
-    let todo = createTodo(e.target.elements);   
+    let todo = createTodo(e.target.elements);
 
     if (storageFunctions.isProject(getCurrentTab())) {
 
-        todo.setProject(getCurrentTab());       
+        todo.setProject(getCurrentTab().innerText);
     }
 
     storageFunctions.addTodo(todo);
@@ -175,6 +186,8 @@ let addNewTodo = (e) => {
 };
 
 /*filter events - ui title clicks */
+
+
 
 let updateWeek = () => {
 
@@ -202,9 +215,9 @@ let updateHome = () => {
     updateDisplay(todoList);
 };
 
-let projectUpdate = (e) => {
+let filterProjects = (e) => {
 
-    setCurrentTab(e.target.innerText)
+    setCurrentTab(e.target)
     clearDisplay();
     let todoList = storageFunctions.filterByProject(e.target.innerText);
     updateDisplay(todoList);
@@ -221,7 +234,7 @@ let updateProjects = () => {
 
         let projectTitle = divGenerator.createDivWithClass("projectTitle");
         projectTitle.innerText = project;
-        projectTitle.addEventListener("click", projectUpdate);
+        projectTitle.addEventListener("click", filterProjects);
         projectWrap.append(projectTitle);
     })
 }
@@ -233,12 +246,13 @@ export {
     openDescriptionWindow,
     addTodoForm,
     addProjectForm,
-    addNoteForm,
+  
     updateWeek,
     updateToday,
     updateHome,
     removeTodo,
     editTodoEvent,
     addNewTodo,
-    addNewProject
+    addNewProject,
+  
 }

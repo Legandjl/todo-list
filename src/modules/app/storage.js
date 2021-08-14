@@ -8,6 +8,8 @@ let todoList = []; //store all todos here, then arr filter them to day/week/proj
 let projectList = [];
 let storageFunctions = {}
 
+
+
 storageFunctions.getProjects = () => {
 
     return projectList;
@@ -103,13 +105,13 @@ storageFunctions.getTodoList = () => {
     return todoList;
 }
 //checks if a currently selected title is a project
-storageFunctions.isProject = (name) => {
+storageFunctions.isProject = (element) => {
 
     let projectSelected = false;
 
     projectList.forEach((project) => {
 
-        if (project.toLowerCase() == name.toLowerCase()) {
+        if (project.toLowerCase() == element.innerText.toLowerCase()) {
 
             projectSelected = true;
         }

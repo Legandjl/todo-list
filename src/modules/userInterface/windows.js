@@ -56,21 +56,15 @@ windowGen.generateEditFormContainer = () => {
 //generates a form container with a sidebar to hold all add new options, uses generate form container as its base
 windowGen.generateAddFormContainer = () => {
 
-
-
     let projectHandlers = {
 
         "Todo": addTodoForm,
-        "Project": addProjectForm,
-        "Note": addNoteForm
-    }    
-  
+        "Project": addProjectForm        
+    }     
 
     let formContainer = windowGen.generateFormContainer("addFormContainer", "addFormHeader", "addFormTitle", "Add New");
     let formSidebar = divGenerator.createDiv("addFormSidebar");
-    let titles = ["Todo", "Project", "Note"];
-
-
+    let titles = ["Todo", "Project"];
 
     titles.forEach((title) => {
 

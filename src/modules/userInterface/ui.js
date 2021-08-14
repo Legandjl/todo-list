@@ -5,11 +5,14 @@ import {
     addButtonEvent,
     updateWeek,
     updateToday,
-    updateHome
+    updateHome,
+    
 } from "../app/eventHandler";
 import {
+  
     createTodoElement
 } from "../app/todo";
+
 let locked = false;
 let currentTab;
 
@@ -70,6 +73,7 @@ let updateDisplay = (todoList) => {
     })
 }
 
+
 let getProjectContainer = () => {
 
     return document.querySelector("#projectWrap");
@@ -77,8 +81,9 @@ let getProjectContainer = () => {
 
 let titleClick = function (e) {
 
-    currentTab = e.target.innerText;
-    console.log(currentTab);
+    if(e.target.innerText != "Projects") {
+    setCurrentTab(e.target);  
+    }
     //will update display to the chosen module (ie projects, notes etc)  
 }
 
@@ -87,19 +92,28 @@ let getCurrentTab = () => {
     return currentTab;
 }
 
-let setCurrentTab = (text) => {
+let setCurrentTab = (element) => {
 
-    currentTab = text;
+    currentTab.classList.remove("activeTab");
+    
+
+    currentTab = element;
+
+    element.classList.add("activeTab");
 }
 
 let showProjects = () => {
 
+    if(document.querySelector("#projectWrap").hasChildNodes()) {
+
     document.querySelector("#projectWrap").classList.toggle("projectWrapShow");
+
+    }
 }
 
 let initialLoad = function () {
 
-    const sideBarTitles = ["Home", "Today", "Week", "Projects", "projectWrap", "Notes"];
+    const sideBarTitles = ["Home", "Today", "Week","Projects", "projectWrap"];
     let header = divGenerator.createDiv("header");
     header.innerText = "TO-DO APPLICATION"
 
@@ -114,7 +128,6 @@ let initialLoad = function () {
 
     let sidebarElements = [sideContainer, buttonContainer];
     let contentElements = [header, sidebar, display];
-
 
     sidebarElements.forEach((element) => {
 
@@ -133,7 +146,7 @@ let initialLoad = function () {
 
         if (title == "projectWrap") {
 
-            sideContainer.append(divGenerator.createDiv("projectWrap"));
+            sidebar.append(divGenerator.createDiv("projectWrap"));
             return;
         }
 
@@ -147,6 +160,9 @@ let initialLoad = function () {
     })
 
     addNewButton.addEventListener("click", addButtonEvent);
+
+    currentTab = document.querySelector("#home");
+    setCurrentTab(document.querySelector("#home"));
 
     document.querySelector("#home").addEventListener("click", updateHome);
 
@@ -170,5 +186,6 @@ export {
     updateDisplay,
     getProjectContainer,
     getCurrentTab,
-    setCurrentTab
+    setCurrentTab,
+    
 }

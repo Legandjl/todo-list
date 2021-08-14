@@ -58,16 +58,15 @@ const Todo = function (title, desc, date, priority) {
         return identifier;
     }
 
-    let setCompleted = () => {
-
-        console.log(completed);
+    let setCompleted = () => {      
 
         if (completed == true) {
-
+      
             completed = false;
+       
             return;
         }
-
+    
         completed = true;
     }
 
@@ -119,10 +118,11 @@ let createTodo = (elements) => {
     return Todo(todoElements[0], todoElements[1], todoDate, todoPriority);
 }
 
+
+
 let createTodoElement = (todo) => {
 
     let todoContainer = divGenerator.createDivWithClass("toDoContainer");
-
     let checkBoxWrapper = divGenerator.createDivWithClass("checkBoxWrapper"); //check if completed
     let titleWrapper = divGenerator.createDivWithClass("titleWrapper"); //will hold todo title
     let descButtonWrapper = divGenerator.createDivWithClass("descButtonWrap"); //holds a button to display a window with the description
@@ -140,7 +140,6 @@ let createTodoElement = (todo) => {
 
     let setCurrentTodo = (todo) => {
 
-
         clearElement(todoContainer);
 
         title = todo.getTitle();
@@ -148,14 +147,27 @@ let createTodoElement = (todo) => {
         if (todo.getCompleted() == true) {
 
             checkBox.checked = true;
+            titleWrapper.classList.add("completed");
         }
 
-        checkBox.addEventListener("change", todo.setCompleted);
+        checkBox.addEventListener("change", todo.setCompleted);        
         checkBoxWrapper.append(checkBox);
         titleWrapper.append(title);
         descButtonWrapper.append(descButton);
         iconWrap.append(binIcon);
         iconWrap.append(editIcon);
+
+        checkBox.addEventListener("change", function () { 
+
+            if (todo.getCompleted() == true) {
+
+                checkBox.checked = true;
+                titleWrapper.classList.add("completed");
+                return;
+            }
+
+            titleWrapper.classList.remove("completed");            
+        })
 
         let toAppend = [checkBoxWrapper, titleWrapper, descButtonWrapper, iconWrap];
 

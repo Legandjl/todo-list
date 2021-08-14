@@ -2,6 +2,7 @@ import {
     divGenerator
 } from "../misc/divGenerator"
 import {
+    addNewNote,
     addNewProject
 } from "../app/eventHandler"
 import {
@@ -113,7 +114,29 @@ let generateProjectForm = () => {
     
 }
 
+let generateNoteForm = () => {
+    let form = document.createElement("FORM");
+    form.id = "noteForm";
+    let content = document.createElement("textarea");
+    content.id = "noteContent"
+
+
+    let submitButton = document.createElement("input")
+    submitButton.value;
+    submitButton.setAttribute("type", "submit");
+    submitButton.id = "noteSubmit";
+
+
+    form.append(content);
+    form.append(submitButton);
+    form.addEventListener("submit", addNewNote);
+
+    return form;
+
+
+}
 export {   
     generateForm,
-    generateProjectForm
+    generateProjectForm,
+    generateNoteForm
 }
