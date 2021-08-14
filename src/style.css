@@ -358,6 +358,7 @@ body {
     grid-column: 1;
     grid-row: 2/-1;
     display: grid;
+    grid-template-rows: auto 1fr;
     padding: 10px;
     grid-gap: 10px;
     justify-items: center;
@@ -531,6 +532,7 @@ body {
     grid-row: 2;
     grid-column: 1/-1;
     padding: 10px;
+    word-break:break-all;
 }
 
 .descTitleWrap {
@@ -559,7 +561,9 @@ body {
 .desc {
 
     resize: none;
+
 }
+
 
 .sideBarTitle {}
 
@@ -599,8 +603,7 @@ input[type="text"] {
 #projectWrap {
 
     overflow-y: scroll; 
-    display: grid;
-   
+    display: grid;   
     grid-template-columns: 1fr;
     grid-gap: 10px;
     padding:10px;
@@ -613,8 +616,6 @@ input[type="text"] {
     max-height: 150px;
 
 }
-
-
 
 #projectWrap:hover {
 
@@ -674,20 +675,23 @@ textarea:focus {
 
     color:#FE0000;
 }
-#noteDisplay {
+
+.projectTitle {
 
     display: grid;
-    grid-column: 1/-1;
-    grid-row: 1/-1;
-    grid-template-columns:repeat(4, 1fr);
- 
+    grid-template-columns: auto 1fr;
+    grid-gap: 20px;
+    align-content: center;
+    align-items: center;
 }
 
-.noteContainer {
-    border-style: solid;
-    border-width: 2px;
-    display: grid;
-    min-width: 200px;
-    word-wrap: break-word;
-   
+.projectTitleText {
+
+    justify-self: start;
+}
+
+.projectTitle img {
+    margin-left: 20px;
+    justify-self: center;
+
 }

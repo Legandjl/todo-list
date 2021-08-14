@@ -8,8 +8,7 @@ import {
     updateHome,
     
 } from "../app/eventHandler";
-import {
-  
+import {  
     createTodoElement
 } from "../app/todo";
 
@@ -93,15 +92,12 @@ let getCurrentTab = () => {
 
 let setCurrentTab = (element) => {
 
-    currentTab.classList.remove("activeTab");
-    
+    currentTab.classList.remove("activeTab");   
 
     currentTab = element;
 
     element.classList.add("activeTab");
 }
-
-
 
 let initialLoad = function () {
 

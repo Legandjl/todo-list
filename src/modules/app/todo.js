@@ -118,8 +118,6 @@ let createTodo = (elements) => {
     return Todo(todoElements[0], todoElements[1], todoDate, todoPriority);
 }
 
-
-
 let createTodoElement = (todo) => {
 
     let todoContainer = divGenerator.createDivWithClass("toDoContainer");

@@ -30,8 +30,9 @@ import {
 import {
     windowGen
 } from "../userInterface/windows";
+import bin from "../images/bin.png";
 
-//todo form windows
+//add new window events - switch between project and todo on sidebar title click
 
 let addTodoForm = (e) => {
 
@@ -44,13 +45,12 @@ let addTodoForm = (e) => {
 let addProjectForm = (e) => {
 
     let container = document.querySelector("#formWrapper");
-    removeFromDisplay(document.querySelector("#formWrapper").firstChild)
+    removeFromDisplay(document.querySelector("#formWrapper").firstChild)    
     let projectForm = generateProjectForm();
     container.append(projectForm);
 };
 /* ui button events */
 
-//opens the add new window and displays an add new todo form
 let addButtonEvent = () => {
 
     if (getLocked() == true) {
@@ -116,7 +116,16 @@ let removeTodo = (e) => {
     removeFromDisplay(e.target.parentElement.parentElement);
 
 };
-/* form events */
+
+let removeProject = (e) => {
+
+    console.log(e.target.parentElement.innerText);
+    storageFunctions.removeProject(e.target.parentElement.innerText);
+    e.target.parentElement.remove();
+    updateHome();
+    
+}
+/* form submit events */
 
 let addNewProject = (e) => {
 
@@ -126,7 +135,6 @@ let addNewProject = (e) => {
     unlockWindow();
     e.preventDefault();
 }
-
 
 let editTodoEvent = (e) => {
 
@@ -152,7 +160,6 @@ let editTodoEvent = (e) => {
     e.preventDefault();
 };
 
-//creates a todo element from form input and appends it to the display
 let addNewTodo = (e) => {
 
     let todo = createTodo(e.target.elements);
@@ -170,8 +177,6 @@ let addNewTodo = (e) => {
 };
 
 /*filter events - ui title clicks */
-
-
 
 let updateWeek = () => {
 
@@ -207,7 +212,8 @@ let filterProjects = (e) => {
     updateDisplay(todoList);
 
 }
-/*projectWrap update event */
+
+/*new project added event*/
 
 let updateProjects = () => {
 
@@ -217,8 +223,14 @@ let updateProjects = () => {
     projectList.forEach((project) => {
 
         let projectTitle = divGenerator.createDivWithClass("projectTitle");
-        projectTitle.innerText = project;
-        projectTitle.addEventListener("click", filterProjects);
+        let binIcon = new Image();
+        binIcon.src = bin;
+        binIcon.addEventListener("click", removeProject);     
+        projectTitle.append(binIcon);
+        let projectTitleText = divGenerator.createDivWithClass("projectTitleText");
+        projectTitleText.innerText = project;
+        projectTitleText.addEventListener("click", filterProjects);
+        projectTitle.append(projectTitleText);
         projectWrap.append(projectTitle);
     })
 }

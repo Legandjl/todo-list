@@ -99,6 +99,7 @@ let generateProjectForm = () => {
     let title = document.createElement("input");
     title.type = "text";
     title.placeholder = "Project title..."
+    title.maxLength = 15;
 
     let submitButton = document.createElement("input")
     submitButton.value;

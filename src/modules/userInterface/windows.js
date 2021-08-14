@@ -1,4 +1,4 @@
-import { addNoteForm, addProjectForm, addTodoForm } from "../app/eventHandler";
+import { addProjectForm, addTodoForm } from "../app/eventHandler";
 import { storageFunctions } from "../app/storage";
 import { closeWindow } from "./ui";
 import { divGenerator } from "../misc/divGenerator";
@@ -8,9 +8,7 @@ let windowGen = {};
 //takes a todo id and generates a decription from it for dom display
 windowGen.generateDescription = (todoId) => {
 
-    let todo = storageFunctions.getTodo(todoId);
-
-    
+    let todo = storageFunctions.getTodo(todoId);   
 
     let description = divGenerator.createDivWithClass("description");
     let descHeader = divGenerator.createDivWithClass("descriptionHeader");

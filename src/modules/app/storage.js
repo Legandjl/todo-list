@@ -12,6 +12,23 @@ storageFunctions.getProjects = () => {
 
     return projectList;
 }
+//removes project & removes reference to project from each todo
+storageFunctions.removeProject = (projectTitle) => {
+
+    let newProjectList = projectList.filter((project) => {
+
+        return project != projectTitle;
+    })
+
+    todoList.forEach((todo) => {
+
+        if(todo.getProject() == projectTitle) {
+            todo.setProject("");
+        }
+    })
+
+    projectList = newProjectList;    
+}
 
 storageFunctions.addProject = (projectTitle) => {
 
@@ -30,10 +47,7 @@ storageFunctions.addProject = (projectTitle) => {
         projectList.push(projectTitle);
     }
 
-    projectList.forEach((project) => {
-
-        console.log(project);
-    })
+   
 }
 
 storageFunctions.addTodo = (todo) => {
