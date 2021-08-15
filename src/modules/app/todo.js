@@ -75,6 +75,25 @@ const Todo = function (title, desc, date, priority) {
         return completed;
     }
 
+    let setCompleteFromState = () => {
+
+        completed = true;
+    }
+
+    let getState = () => {
+
+        return {
+
+            "title": getTitle(),
+            "project":getProject(),
+            "desc": getDesc(),
+            "identifier":getIdentifier(),
+            "date":getDate(),
+            "completed": getCompleted(),
+            "priority": getPriority()
+        }
+    }
+
     return {
         getTitle,
         getDesc,
@@ -85,8 +104,25 @@ const Todo = function (title, desc, date, priority) {
         setCompleted,
         getCompleted,
         setProject,
-        getProject
+        getProject,
+        getState,
+        setCompleteFromState
     }
+}
+
+let createFromState = (title, project, desc, identifier, date, completed, priority) => {
+
+    let todo = Todo(title, desc, date, priority);
+    todo.setProject(project);
+    todo.setIdentifier(identifier);
+
+    if(completed == true) {
+
+    todo.setCompleteFromState();
+
+    }
+
+    return todo;
 }
 
 let createTodo = (elements) => {
@@ -199,5 +235,7 @@ let createTodoElement = (todo) => {
 
 export {
     createTodo,
-    createTodoElement
+    createTodoElement,
+    createFromState
+
 }

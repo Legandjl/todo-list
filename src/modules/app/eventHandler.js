@@ -169,12 +169,15 @@ let addNewTodo = (e) => {
     if (storageFunctions.isProject(getCurrentTab())) {
 
         todo.setProject(getCurrentTab().innerText);
+     
     }
 
     storageFunctions.addTodo(todo);
+
     removeFromDisplay(e.target.parentElement.parentElement);
     appendTodoToDisplay(createTodoElement(todo));
     unlockWindow();
+  
     e.preventDefault();
 };
 
@@ -207,6 +210,8 @@ let updateHome = () => {
 };
 
 let filterProjects = (e) => {
+
+    console.log(e.target.innerText)
 
     setCurrentTab(e.target)
     clearDisplay();
@@ -250,6 +255,7 @@ export {
     removeTodo,
     editTodoEvent,
     addNewTodo,
-    addNewProject
+    addNewProject,
+    updateProjects
 
 }

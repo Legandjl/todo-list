@@ -10,7 +10,7 @@ import {
 import {  
     createTodoElement
 } from "../app/todo";
-import { checkForLocal } from "../app/storage";
+import {storageFunctions } from "../app/storage";
 
 let locked = false;
 let currentTab;
@@ -161,6 +161,10 @@ let initialLoad = function () {
     document.querySelector("#today").addEventListener("click", updateToday);
 
     document.querySelector("#week").addEventListener("click", updateWeek);
+
+    storageFunctions.checkForLocal();
+    storageFunctions.checkForProjects();
+  
 
    
 

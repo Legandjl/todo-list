@@ -3,12 +3,20 @@ import {
     isSameWeek,
     parseISO
 } from 'date-fns'
+import {
+    updateHome,
+    updateProjects
+} from './eventHandler';
+import {
+    createFromState
+} from './todo';
 
+
+let localTodoList = JSON.parse(localStorage.getItem("todoList"));
+let localProjectList = JSON.parse(localStorage.getItem("projectList"));
 let todoList = []; //store all todos here, then arr filter them to day/week/projects
 let projectList = [];
 let storageFunctions = {}
-
-
 
 storageFunctions.getProjects = () => {
 
@@ -24,12 +32,13 @@ storageFunctions.removeProject = (projectTitle) => {
 
     todoList.forEach((todo) => {
 
-        if(todo.getProject() == projectTitle) {
+        if (todo.getProject() == projectTitle) {
             todo.setProject("");
         }
     })
 
-    projectList = newProjectList;    
+    projectList = newProjectList;
+    updateLocalStorage();
 }
 
 storageFunctions.addProject = (projectTitle) => {
@@ -47,14 +56,17 @@ storageFunctions.addProject = (projectTitle) => {
     if (match == true) {
 
         projectList.push(projectTitle);
-    }   
+    }
+
+    updateLocalStorage();
 }
 
-storageFunctions.addTodo = (todo) => {
+storageFunctions.addTodo = (todo) => {  
 
     todoList.push(todo);
     let id = todoList.indexOf(todo);
     todo.setIdentifier(id);
+    updateLocalStorage();
 }
 
 storageFunctions.removeTodo = (id) => {
@@ -65,6 +77,7 @@ storageFunctions.removeTodo = (id) => {
     })
 
     todoList = newTodoList;
+    updateLocalStorage();
 }
 //returns todo at index id
 storageFunctions.getTodo = (id) => {
@@ -80,6 +93,7 @@ storageFunctions.getTodo = (id) => {
 storageFunctions.replaceTodo = (index, todo) => {
 
     todoList.splice(index, 1, todo);
+    updateLocalStorage();
 }
 //returns an array of todo with todays day
 storageFunctions.getToday = () => {
@@ -133,9 +147,63 @@ storageFunctions.isProject = (element) => {
 
 }
 
+storageFunctions.checkForLocal = () => {
+
+    if (localTodoList == null) {
+
+        return;
+
+    } else {
+
+        localTodoList.forEach(todo => {
+          
+            let todoItem = createFromState(todo.title, todo.project, todo.desc, todo.identifier, todo.date, todo.completed, todo.priority);
+
+            todoList.push(todoItem);
+
+        })
+    }
+
+    updateHome();
+
+}
+
+storageFunctions.checkForProjects = () => {
+
+    if (localProjectList == null) {
+
+        return;
+
+    } else {
+
+        localProjectList.forEach(item => {
+        
+            storageFunctions.addProject(item);
+        })
+    }
+
+    updateProjects();
+}
+
+function updateLocalStorage() {
+
+    let localTodoListCreator = [];
+
+    todoList.forEach((todo) => {
+
+        let todoItem = todo.getState();       
+        localTodoListCreator.push(todoItem);
+    })
+
+    localStorage.setItem("todoList", JSON.stringify(localTodoListCreator));
+    localTodoList = JSON.parse(localStorage.getItem("todoList"));
+
+    localStorage.setItem("projectList", JSON.stringify(projectList));
+    localProjectList = JSON.parse(localStorage.getItem("projectList"));
+}
 
 
 export {
-
     storageFunctions
+
 }
